@@ -1,0 +1,34 @@
+{
+  "formatVersion": "1",
+  "header": {
+    "description": "Delete Gate Entry",
+    "originalLanguage": "en",
+    "abapLanguageVersion": "cloudDevelopment"
+  },
+  "generalInformation": {
+    "appType": "ui5",
+    "catalogId": "SAP_TC_UI5_REPO_UIAD"
+  },
+  "ui5AppDetails": {
+    "appId": "zdelete"
+  },
+  "navigation": {
+    "targetMappingId": "UI5R_F9C0221F8DD7819094C54EE0D9DAE9332ED4367A_TM",
+    "semanticObject": "ZDELETEGE",
+    "action": "Delete",
+    "desktop": true,
+    "tablet": true,
+    "phone": true
+  },
+  "tiles": [
+    {
+      "id": "UI5R_F9C0221F8DD7819094C54EE0D9DAE9332ED4367A_AL",
+      "tileType": "static",
+      "isDefault": true,
+      "standard": {
+        "title": "Delete Gate Entry",
+        "subtitle": "ZDELETEGE"
+      }
+    }
+  ]
+}

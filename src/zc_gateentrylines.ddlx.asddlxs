@@ -1,0 +1,261 @@
+@Metadata.layer: #CUSTOMER
+@UI: {
+  headerInfo: {
+    typeName: 'GateEntryLines', 
+    typeNamePlural: 'GateEntryLines', 
+    title: {
+      type: #STANDARD, 
+      label: 'GateEntryLines', 
+      value: 'GateItemNo'
+    }
+  }, 
+  presentationVariant: [ {
+    sortOrder: [ {
+      by: 'GateItemNo', 
+      direction: #DESC
+    } ], 
+    visualizations: [ {
+      type: #AS_LINEITEM
+    } ]
+  } ]
+}
+
+annotate entity ZC_GateEntryLines
+    with 
+{
+  @UI.facet: [ {
+    id: 'idGateEntryLines', 
+    purpose: #STANDARD, 
+    type: #IDENTIFICATION_REFERENCE, 
+    label: 'GateEntryLines', 
+    position: 10 
+  } ]
+  
+  @UI.lineItem: [ {
+    position: 10 , 
+    importance: #HIGH, 
+    label: 'Gateentryno'
+  } ]
+  @UI.identification: [ {
+    position: 10 , 
+    label: 'Gateentryno'
+  } ]
+  GateEntryNo;
+  
+  @UI.lineItem: [ {
+    position: 20 , 
+    importance: #HIGH, 
+    label: 'Gateitemno'
+  } ]
+  @UI.identification: [ {
+    position: 20 , 
+    label: 'Gateitemno'
+  } ]
+  GateItemNo;
+  
+  @UI.lineItem: [ {
+    position: 30 , 
+    importance: #HIGH, 
+    label: 'Party Code'
+  } ]
+  @UI.identification: [ {
+    position: 30 , 
+    label: 'Party Code'
+  } ]
+   @Consumption.valueHelpDefinition: [{ entity: { name: 'I_Supplier_VH', element: 'Supplier' },
+      distinctValues: true,
+  additionalBinding: [{ localElement: 'PartyName', element: 'SupplierName', usage: #FILTER_AND_RESULT }]
+   }]
+  PartyCode;
+  
+  @UI.lineItem: [ {
+    position: 40 , 
+    importance: #HIGH, 
+    label: 'Party Name'
+  } ]
+  @UI.identification: [ {
+    position: 40 , 
+    label: 'Party Name'
+  } ]
+  PartyName;
+    
+  @UI.lineItem: [ {
+    position: 70 , 
+    importance: #HIGH, 
+    label: 'Product Code'
+  } ]
+  @UI.identification: [ {
+    position: 70 , 
+    label: 'Product Code'
+  } ]
+    @Consumption.valueHelpDefinition: [{ entity: { name: 'I_ProductStdVH', element: 'Product' },
+      distinctValues: true,
+  additionalBinding: [{ localElement: 'ProductDesc', element: 'Product_Text', usage: #FILTER_AND_RESULT }]
+   }]
+  ProductCode;
+  
+  @UI.lineItem: [ {
+    position: 80 , 
+    importance: #HIGH, 
+    label: 'Product Desc'
+  } ]
+  @UI.identification: [ {
+    position: 80 , 
+    label: 'Product Desc'
+  } ]
+  ProductDesc;
+    
+  @UI.lineItem: [ {
+    position: 100 , 
+    importance: #HIGH, 
+    label: 'Document No'
+  } ]
+  @UI.identification: [ {
+    position: 100 , 
+    label: 'Document No'
+  } ]
+   @Consumption.valueHelpDefinition: [{ entity: { name: 'ZI_DocumentVH', element: 'DocumentNo' },
+      distinctValues: true,
+  additionalBinding: [{ localElement: 'DocumentItemNo', element: 'DocumentItemNo',usage: #RESULT },
+  { localElement: 'ProductCode', element: 'DocumentItem',usage: #RESULT },
+  { localElement: 'ProductDesc', element: 'DocumentItemText',usage: #RESULT },
+  { localElement: 'PartyCode', element: 'InvoicingParty' ,usage: #RESULT },
+  { localElement: 'PartyName', element: 'InvoicingPartyName',usage: #RESULT},
+  { localElement: 'OrderQty', element: 'DocumentItemQty' ,usage: #RESULT},
+  { localElement: 'Plant', element: 'Plant' },
+  { localElement: 'BalQty', element: 'BalQty',usage: #RESULT },
+  { localElement: 'Rate', element: 'Rate',usage: #RESULT },
+  { localElement: 'GST', element: 'GST',usage: #RESULT },
+  { localElement: 'SLoc', element: 'StorageLocation',usage: #RESULT }]
+     }]
+  DocumentNo;
+  
+  @UI.lineItem: [ {
+    position: 120 , 
+    importance: #HIGH, 
+    label: 'Document Qty'
+  } ]
+  @UI.identification: [ {
+    position: 120 , 
+    label: 'Document Qty'
+  } ]
+  DocumentQty;
+  
+  @UI.lineItem: [ {
+    position: 130 , 
+    importance: #HIGH, 
+    label: 'Uom'
+  } ]
+  @UI.identification: [ {
+    position: 130 , 
+    label: 'Uom'
+  } ]
+   @Consumption.valueHelpDefinition: [{ entity: { name: 'I_UnitOfMeasure', element: 'UnitOfMeasure' },
+  distinctValues: true
+   }]
+  UOM;
+  
+  @UI.lineItem: [ {
+    position: 140 , 
+    importance: #HIGH, 
+    label: 'Gate Qty'
+  } ]
+  @UI.identification: [ {
+    position: 140 , 
+    label: 'Gate Qty'
+  } ]
+  GateQty;
+  
+  @UI.lineItem: [ {
+    position: 150 , 
+    importance: #HIGH, 
+    label: 'Gate Value'
+  } ]
+  @UI.identification: [ {
+    position: 150 , 
+    label: 'Gate Value'
+  } ]
+  GateValue;
+    
+  @UI.lineItem: [ {
+    position: 160 , 
+    importance: #HIGH, 
+    label: 'Remarks'
+  } ]
+  @UI.identification: [ {
+    position: 160 , 
+    label: 'Remarks'
+  } ]
+  Remarks;
+  
+    @UI.lineItem: [ {
+    position: 170 , 
+    importance: #HIGH, 
+    label: 'Plant'
+  } ]
+  @UI.identification: [ {
+    position: 170 , 
+    label: 'Plant'
+  } ]
+   @Consumption.valueHelpDefinition: [{ entity: { name: 'I_Plant', element: 'Plant' },
+  distinctValues: true
+   }]
+  Plant;
+  
+    @UI.lineItem: [ {
+    position: 180 , 
+    importance: #HIGH, 
+    label: 'Storage Location'
+  } ]
+  @UI.identification: [ {
+    position: 180 , 
+    label: 'Storage Location'
+  } ]
+  SLoc;
+  
+      @UI.lineItem: [ {
+    position: 190 , 
+    importance: #HIGH, 
+    label: 'Rate'
+  } ]
+  @UI.identification: [ {
+    position: 190 , 
+    label: 'Rate'
+  } ]
+  Rate;
+  
+        @UI.lineItem: [ {
+    position: 200 , 
+    importance: #HIGH, 
+    label: 'Order Qty'
+  } ]
+  @UI.identification: [ {
+    position: 200 , 
+    label: 'Order Qty'
+  } ]
+  OrderQty;
+  
+        @UI.lineItem: [ {
+    position: 210 , 
+    importance: #HIGH, 
+    label: 'In Qty'
+  } ]
+  @UI.identification: [ {
+    position: 210 , 
+    label: 'In Qty'
+  } ]
+  InQty;
+  
+        @UI.lineItem: [ {
+    position: 220 , 
+    importance: #HIGH, 
+    label: 'GST'
+  } ]
+  @UI.identification: [ {
+    position: 220 , 
+    label: 'GST'
+  } ]
+  GST;
+  
+      
+}

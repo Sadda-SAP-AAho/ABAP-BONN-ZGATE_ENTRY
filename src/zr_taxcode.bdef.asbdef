@@ -1,0 +1,35 @@
+managed;
+strict;
+
+define behavior for ZR_TAXCODE alias TaxCode
+implementation in class zbp_r_taxcode unique
+persistent table ztaxcode
+lock master
+authorization master ( global, instance )
+etag master LastChangedAt
+{
+field ( readonly )
+   CreatedBy,
+   CreatedAt,
+   LastChangedAt,
+   LastChangedBy;
+
+field ( readonly:update )
+Taxcode;
+
+  create;
+  update;
+  delete;
+
+  mapping for ztaxcode
+  {
+      Description            = description;
+      Rate                   = rate;
+      Taxcode                = taxcode;
+       CreatedAt               = created_at;
+    CreatedBy               = created_by;
+     LastChangedAt           = last_changed_at;
+    LastChangedBy           = last_changed_by;
+    LocalLastChangedAt      = local_last_changed_at;
+  }
+}

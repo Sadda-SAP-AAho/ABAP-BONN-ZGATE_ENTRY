@@ -1,0 +1,18 @@
+interface;
+define behavior for ZI_GateEntryHeader alias GateEntryHeader
+use etag
+{
+  use create;
+  use update;
+  use delete;
+
+  use association _GateEntryLines { create; }
+}
+
+define behavior for ZI_GateEntryLines alias GateEntryLines
+{
+  use update;
+  use delete;
+
+  use association _GateEntryHeader;
+}

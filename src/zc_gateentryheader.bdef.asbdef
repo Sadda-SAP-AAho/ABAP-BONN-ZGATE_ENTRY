@@ -1,0 +1,24 @@
+projection;
+strict;
+
+use side effects;
+
+define behavior for ZC_GateEntryHeader alias GateEntryHeader
+use etag
+{
+  use create;
+  use update;
+  use delete;
+
+  use action cancelGateEntry;
+  use action cancelMultiple;
+  use association _GateEntryLines { create; }
+}
+
+define behavior for ZC_GateEntryLines alias GateEntryLines
+{
+  use update;
+  use delete;
+
+  use association _GateEntryHeader;
+}

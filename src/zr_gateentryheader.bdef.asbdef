@@ -1,0 +1,133 @@
+managed;
+strict;
+
+define behavior for ZR_GateEntryHeader alias GateEntryHeader
+implementation in class zbp_r_gateentryheader unique
+persistent table zgateentryheader
+lock master
+early numbering
+authorization master ( global, instance )
+etag master LastChangedAt
+{
+  field ( readonly )
+   CreatedBy,
+   CreatedAt,
+   LastChangedAt,
+   LastChangedBy;
+
+  field ( readonly )
+   GateEntryNo;
+
+  field ( mandatory ) EntryType, VehicleNo;
+
+  action( features : instance ) cancelGateEntry    result [1] $self;
+  action cancelMultiple;
+  determination changeValues on modify { field EntryType; }
+//  validation validateMandatory on save { field Vehicleno, Plant, Entrytype; create; update;}
+  validation validateMandatory on save { field VehicleNo, EntryType; create; update;}
+//  internal action ReCalcTotals;
+
+  create ( precheck );
+  update ( precheck );
+  delete;
+
+  mapping for zgateentryheader
+  {
+
+    BillAmount              = billamount;
+    Cancelled               = cancelled;
+    CreatedAt               = created_at;
+    CreatedBy               = created_by;
+    DriverLicenseNo         = driverlicenseno;
+    DriverName              = drivername;
+    DriverNo                = driverno;
+    EntryDate               = entrydate;
+    EntryType               = entrytype;
+    GateEntryNo             = gateentryno;
+    GateInDate              = gateindate;
+    GateInTime              = gateintime;
+    ExpectedReturnDate      = expectrtdate;
+    GateOutDate             = gateoutdate;
+    GateOutTime             = gateouttime;
+    GateOutward             = gateoutward;
+    GrossWt                 = grosswt;
+    InvoiceDate             = invoicedate;
+    InvoiceNo               = invoiceno;
+    InvoiceParty            = invoiceparty;
+    InvoicePartyName        = invoicepartyname;
+    InvoicePartyGST         = invoicepartygst;
+    LastChangedAt           = last_changed_at;
+    LastChangedBy           = last_changed_by;
+    LocalLastChangedAt      = local_last_changed_at;
+    LrDate                  = lrdate;
+    LrNo                    = lrno;
+    NetWt                   = netwt;
+    Plant                   = plant;
+    SLoc                    = sloc;
+    SlipNo                  = slipno;
+    Purpose                 = purpose;
+    RefDocNo                = refdocno;
+    Remarks                 = remarks;
+    RequestedBy             = requestedby;
+    TareWt                  = tarewt;
+    TransportMode           = transportmode;
+    TransporterName         = transportername;
+    VehRepDate              = vehrepdate;
+    VehRepTime              = vehreptime;
+    VehicleNo               = vehicleno;
+  }
+
+  association _GateEntryLines { create  ; }
+}
+
+define behavior for ZR_GateEntryLines alias GateEntryLines
+implementation in class zbp_r_gateentrylines unique
+persistent table zgateentrylines
+early numbering
+lock dependent by _GateEntryHeader
+authorization dependent by _GateEntryHeader
+//etag master <field_name>
+{
+  update ( precheck );
+  delete;
+  field ( readonly ) GateEntryNo, GateItemNo,OrderQty,BalQty;
+
+//  field ( readonly : update )
+//  DocumentNo,DocumentItemNo,DocumentQty;
+
+  determination updateLines on save { field PartyCode; }
+
+  determination calculateTotals on modify { field GateQty; field InQty; }
+
+//  side effects
+//  {
+//    field Gateqty affects field _GateEntryHeader.Totallines;
+////    action Apply_Discount affects field _Travel.TotalPrice ;
+//  }
+
+  mapping for zgateentrylines
+  {
+    BalQty                  = balqty;
+    DocumentNo              = documentno;
+    DocumentItemNo          = documentitemno;
+    DocumentQty             = documentqty;
+    GateEntryNo             = gateentryno;
+    GateItemNo              = gateitemno;
+    GateQty                 = gateqty;
+    InQty                   = inqty;
+    GST                     = gst;
+    OrderQty                = orderqty;
+    GateValue               = gatevalue;
+    PartyCode               = partycode;
+    PartyName               = partyname;
+    Plant                   = plant;
+    ProductCode             = productcode;
+    ProductDesc             = productdesc;
+    Rate                    = rate;
+    Remarks                 = remarks;
+    SLoc                    = sloc;
+    UOM                     = uom;
+  }
+
+  association _GateEntryHeader;
+}

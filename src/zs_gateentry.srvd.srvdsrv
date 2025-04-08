@@ -1,0 +1,12 @@
+@EndUserText.label: 'Service definition for Gate Entry'
+@ObjectModel.leadingEntity.name: 'ZC_GATEENTRYHEADER'
+define service ZS_GATEENTRY {
+  expose ZC_GateEntryHeader as GateEntryHeader;
+  expose ZC_GateEntryLines  as GateEntryLines;
+  expose ZI_DocumentVH      as DocumentVH;
+  expose I_UnitOfMeasure    as UnitOfMeasure;
+  expose I_Plant            as Plant;
+  expose ZI_ProductVH       as ProductStdVH;
+  expose ZI_GateEntryType   as GateEntryType;
+  expose ZI_InvoiceParty_VH as InvoicePartyVH;
+}

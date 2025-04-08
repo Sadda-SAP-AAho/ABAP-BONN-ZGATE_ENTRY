@@ -1,0 +1,70 @@
+@Metadata.layer: #CORE
+@UI: {
+  headerInfo: {
+    typeName: 'Tax Code', 
+    typeNamePlural: 'Tax Codes', 
+    title: {
+      type: #STANDARD, 
+      label: 'Tax Codes', 
+      value: 'TaxCode'
+    }
+  }
+}
+
+annotate entity ZC_TAXCODE
+    with 
+{
+
+@UI.facet: [ {
+    id: 'idCollection', 
+    type: #COLLECTION, 
+    label: 'TaxCode', 
+    position: 10 
+  }, 
+  {
+    id: 'idIdentification', 
+    parentId: 'idCollection', 
+    type: #IDENTIFICATION_REFERENCE, 
+    label: 'General Information', 
+    position: 20 
+  } ]
+  
+  @UI.lineItem: [ {
+    position: 10 , 
+    importance: #HIGH, 
+    label: 'Tax Code'
+  } ]
+  @UI.identification: [ {
+    position: 10 , 
+    label: 'Tax Code'
+  } ]
+  @UI.selectionField: [ {
+    position: 10 
+  } ]
+   @Consumption.valueHelpDefinition: [{ entity: { name: 'I_TaxCodeText', element: 'TaxCode' },
+  distinctValues: true,
+  additionalBinding: [{ localElement: 'Description', element: 'TaxCodeName'}]
+   }]
+Taxcode;
+  @UI.lineItem: [ {
+    position: 20 , 
+    importance: #HIGH, 
+    label: 'Description'
+  } ]
+  @UI.identification: [ {
+    position: 20 , 
+    label: 'Description'
+  } ]
+Description;
+  @UI.lineItem: [ {
+    position: 30 , 
+    importance: #HIGH, 
+    label: 'Rate'
+  } ]
+  @UI.identification: [ {
+    position:30 , 
+    label: 'Rate'
+  } ]
+Rate;
+    
+}

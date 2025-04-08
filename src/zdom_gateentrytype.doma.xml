@@ -1,0 +1,54 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<abapGit version="v1.0.0" serializer="LCL_OBJECT_DOMA" serializer_version="v1.0.0">
+ <asx:abap xmlns:asx="http://www.sap.com/abapxml" version="1.0">
+  <asx:values>
+   <DD01V>
+    <DOMNAME>ZDOM_GATEENTRYTYPE</DOMNAME>
+    <DDLANGUAGE>E</DDLANGUAGE>
+    <DATATYPE>CHAR</DATATYPE>
+    <LENG>000010</LENG>
+    <OUTPUTLEN>000010</OUTPUTLEN>
+    <VALEXI>X</VALEXI>
+    <DDTEXT>Gate Entry Type</DDTEXT>
+    <DOMMASTER>E</DOMMASTER>
+   </DD01V>
+   <DD07V_TAB>
+    <DD07V>
+     <DOMNAME>ZDOM_GATEENTRYTYPE</DOMNAME>
+     <VALPOS>0001</VALPOS>
+     <DDLANGUAGE>E</DDLANGUAGE>
+     <DOMVALUE_L>PUR</DOMVALUE_L>
+     <DDTEXT>Gate Pass Against PO</DDTEXT>
+    </DD07V>
+    <DD07V>
+     <DOMNAME>ZDOM_GATEENTRYTYPE</DOMNAME>
+     <VALPOS>0002</VALPOS>
+     <DDLANGUAGE>E</DDLANGUAGE>
+     <DOMVALUE_L>RGP-IN</DOMVALUE_L>
+     <DDTEXT>Gate Pass Against RGP-IN</DDTEXT>
+    </DD07V>
+    <DD07V>
+     <DOMNAME>ZDOM_GATEENTRYTYPE</DOMNAME>
+     <VALPOS>0003</VALPOS>
+     <DDLANGUAGE>E</DDLANGUAGE>
+     <DOMVALUE_L>RGP-OUT</DOMVALUE_L>
+     <DDTEXT>Gate Pass Against RGP-OUT</DDTEXT>
+    </DD07V>
+    <DD07V>
+     <DOMNAME>ZDOM_GATEENTRYTYPE</DOMNAME>
+     <VALPOS>0004</VALPOS>
+     <DDLANGUAGE>E</DDLANGUAGE>
+     <DOMVALUE_L>NRGP</DOMVALUE_L>
+     <DDTEXT>Non-Returnable Gate Pass</DDTEXT>
+    </DD07V>
+    <DD07V>
+     <DOMNAME>ZDOM_GATEENTRYTYPE</DOMNAME>
+     <VALPOS>0005</VALPOS>
+     <DDLANGUAGE>E</DDLANGUAGE>
+     <DOMVALUE_L>WREF</DOMVALUE_L>
+     <DDTEXT>Gate Pass for Material in With or Without Reference</DDTEXT>
+    </DD07V>
+   </DD07V_TAB>
+  </asx:values>
+ </asx:abap>
+</abapGit>

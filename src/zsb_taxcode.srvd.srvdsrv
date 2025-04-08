@@ -1,0 +1,4 @@
+@EndUserText.label: 'Service Binding for TaxCode'
+define service ZSB_TaxCode {
+  expose ZC_TAXCODE as TaxCode;
+}

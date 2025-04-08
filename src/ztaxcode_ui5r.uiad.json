@@ -1,0 +1,34 @@
+{
+  "formatVersion": "1",
+  "header": {
+    "description": "Tax Code",
+    "originalLanguage": "en",
+    "abapLanguageVersion": "cloudDevelopment"
+  },
+  "generalInformation": {
+    "appType": "ui5",
+    "catalogId": "SAP_TC_UI5_REPO_UIAD"
+  },
+  "ui5AppDetails": {
+    "appId": "ztaxcode"
+  },
+  "navigation": {
+    "targetMappingId": "UI5R_2813F01F802B281BA821362CF116A53863DB0A0F_TM",
+    "semanticObject": "ZTaxCode",
+    "action": "Manage",
+    "desktop": true,
+    "tablet": true,
+    "phone": true
+  },
+  "tiles": [
+    {
+      "id": "UI5R_2813F01F802B281BA821362CF116A53863DB0A0F_AL",
+      "tileType": "static",
+      "isDefault": true,
+      "standard": {
+        "title": "Tax Code",
+        "subtitle": "ZTaxCode"
+      }
+    }
+  ]
+}

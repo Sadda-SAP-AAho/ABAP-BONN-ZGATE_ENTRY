@@ -40,7 +40,8 @@ select from I_PurchaseOrderAPI01 as PUR
         PurchaseOrderItem.PurchaseOrderQuantityUnit     as                  DocumentItemQtyUnit,
         @Semantics.quantity.unitOfMeasure: 'DocumentItemQtyUnit'     
         case when _GRN.GRNQty is null then PurchaseOrderItem.OrderQuantity
-        else (PurchaseOrderItem.OrderQuantity - _GRN.GRNQty) end as         BalQty
+        else (PurchaseOrderItem.OrderQuantity - _GRN.GRNQty) end as         BalQty,
+        PurchaseOrderItem.OverdelivTolrtdLmtRatioInPct  as              Tolerance
     }
     where PurchaseOrderItem.PurchasingDocumentDeletionCode = '' and PurchaseOrderItem.IsCompletelyDelivered = ''
           and PUR.ReleaseIsNotCompleted = '' and PUR.PurchaseOrderType != 'ZSRV' and PUR.PurchaseOrderType != 'ZRET' 
@@ -77,7 +78,8 @@ select from I_PurchaseOrderAPI01 as PUR
                else cast( EntryLines.GateQty as abap.dec(15,3) ) - cast( _GRN.GRNQty as abap.dec(15,3) )
              end
            ) as abap.dec(13,3)
-        ) as BalQty
+        )                                               as                  BalQty,
+       0                                                as                  Tolerance              
     }
      where EntryHeader.GateOutward = 0 and EntryHeader.EntryType = 'RGP-OUT'
      union
@@ -108,7 +110,8 @@ select from I_PurchaseOrderAPI01 as PUR
         PurchaseOrderItem.NetPriceAmount                as                  Rate,
         PurchaseOrderItem.PurchaseOrderQuantityUnit     as                  DocumentItemQtyUnit,      
         (case when _GRN.GRNQty is null then PurchaseOrderItem.OrderQuantity
-        else (PurchaseOrderItem.OrderQuantity - _GRN.GRNQty) end) as         BalQty
+        else (PurchaseOrderItem.OrderQuantity - _GRN.GRNQty) end) as         BalQty,
+        PurchaseOrderItem.OverdelivTolrtdLmtRatioInPct  as              Tolerance
     }
     where PurchaseOrderItem.PurchasingDocumentDeletionCode = '' and PurchaseOrderItem.IsCompletelyDelivered = ''
           and PUR.ReleaseIsNotCompleted = ''  and PUR.PurchaseOrderType = 'ZSRV'

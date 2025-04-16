@@ -1,0 +1,78 @@
+<mvc:View
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.uxap"
+    xmlns:fo="sap.f"
+    xmlns:m="sap.m"
+    xmlns:core="sap.ui.core"
+    xmlns:t="sap.ui.table"
+    xmlns:mdc="sap.ui.mdc"
+    xmlns:mdct="sap.ui.mdc.table"
+    xmlns:vm="sap.ui.fl.variants"
+    xmlns:smartTable="sap.ui.comp.smarttable"
+    xmlns:sfb="sap.ui.comp.smartfilterbar"
+    xmlns:upload="sap.m.upload"
+    xmlns:f="sap.ui.layout.form"
+    xmlns:layout="sap.ui.layout"
+    controllerName="gateentry.controller.Create"
+    height="100%"
+>
+    <m:Page
+        id="_IDGenPage1"
+        showHeader="false"
+        contentOnlyBusy="true"
+    >
+        <m:Panel
+            id="_IDGenPanel"
+            width="auto"
+            class="sapUiResponsiveMargin"
+            headerText="General Information"
+        >
+            <m:content>
+                <mvc:XMLView
+                    id="createHeaderForm"
+                    viewName="gateentry.view.Components.CreateHeader"
+                />
+            </m:content>
+        </m:Panel>
+        <fo:DynamicPage
+            id="dynamicPageId"
+            fitContent="true"
+        >
+            <fo:content>
+                <mvc:XMLView
+                    id="createLines"
+                    viewName="gateentry.view.Components.AddLines"
+                    controllerName="gateentry.controller.Components.AddLines"
+                />
+            </fo:content>
+        </fo:DynamicPage>
+
+        <m:footer>
+            <m:OverflowToolbar id="_IDGenOverflowToolbar4">
+                <m:Button
+                    id="_IDGenButton16"
+                    visible="{=!!${message>/}.length}"
+                    icon="{ path: '/', formatter: '.buttonIconFormatter' }"
+                    type="{ path: '/', formatter: '.buttonTypeFormatter' }"
+                    text="{path: '/', formatter: '.highestSeverityMessages' }"
+                    press=".handleMessagePopoverPress"
+                    ariaHasPopup="Dialog"
+                />
+
+                <m:ToolbarSpacer id="_IDGenToolbarSpacer5" />
+                <m:Button
+                    id="_IDGenButton6"
+                    type="Default"
+                    text="Cancel"
+                    press="cancel"
+                />
+                <m:Button
+                    id="_IDGenButton9"
+                    type="Emphasized"
+                    text="Save"
+                    press="save"
+                />
+            </m:OverflowToolbar>
+        </m:footer>
+    </m:Page>
+</mvc:View>

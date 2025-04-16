@@ -1,0 +1,426 @@
+<mvc:View
+    xmlns:rowmodes="sap.ui.table.rowmodes"
+    xmlns="sap.m"
+    xmlns:uxap="sap.uxap"
+    xmlns:core="sap.ui.core"
+    xmlns:table="sap.ui.table"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:smartForm="sap.ui.comp.smartform"
+    xmlns:smartTable="sap.ui.comp.smarttable"
+    xmlns:smartField="sap.ui.comp.smartfield"
+    xmlns:html="http://www.w3.org/1999/xhtml"
+    xmlns:app="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1"
+    controllerName="gateentry.controller.Details"
+    height="100%"
+>
+    <Page
+        id="_IDGenPage4"
+        showHeader="true"
+        showFooter="false"
+    >
+        <customHeader>
+            <OverflowToolbar id="_IDGenOverflowToolbar6">
+                <ToolbarSpacer id="_IDGenToolbarSpacer" />
+                <!-- <Button
+                    id="CancelEntry"
+                    press="onClickCancelEntry"
+                    text="Cancel Entry"
+                    visible="false"
+                /> -->
+                <Button
+                    id="Update"
+                    text="Edit"
+                    press="editEnable"
+                    visible="false"
+                />
+                <!-- <Button
+                    id="Delete"
+                    press="onClickDelete"
+                    text="Delete"
+                    visible="false"
+                /> -->
+            </OverflowToolbar>
+        </customHeader>
+        <uxap:ObjectPageLayout
+            id="ObjectPageLayout"
+            headerContentPinned="true"
+            upperCaseAnchorBar="false"
+        >
+            <uxap:sections>
+                <uxap:ObjectPageSection
+                    titleUppercase="false"
+                    title="Entry Header"
+                    id="_IDGenPanel2"
+                    class="sapUiResponsiveMargin"
+                >
+                    <uxap:subSections>
+                        <uxap:ObjectPageSubSection id="goalsSectionSS1">
+                            <uxap:blocks>
+                                <smartForm:SmartForm
+                                    id="smartForm"
+                                    app:defaultCheckBoxDisplayBehaviour="OnOff"
+                                    app:defaultDropDownDisplayBehaviour="idAndDescription"
+                                    validationMode="Async"
+                                >
+                                    <smartForm:layout>
+                                        <smartForm:ColumnLayout
+                                            id="_IDGenColumnLayout"
+                                            columnsM="2"
+                                            columnsL="3"
+                                            columnsXL="3"
+                                        />
+                                    </smartForm:layout>
+                                    <smartForm:Group id="_IDGenGroup1">
+                                        <smartForm:GroupElement
+                                            id="_IDGenGroupElement"
+                                        >
+                                            <smartField:SmartField
+                                                id="_IDGenSmartField"
+                                                textLabel="Gate Entry No"
+                                                value="{GateEntryNo}"
+                                            />
+                                        </smartForm:GroupElement>
+                                        <smartForm:GroupElement
+                                            id="_IDGenGroupElement1"
+                                        >
+                                            <smartField:SmartField
+                                                id="_IDGenSmartField1"
+                                                textLabel="Entry Type"
+                                                enabled="false"
+                                                value="{Gateentrytypedesc} ({EntryType})"
+                                            />
+                                        </smartForm:GroupElement>
+
+                                        <smartForm:GroupElement
+                                            id="_IDGenGroupElement3"
+                                        >
+                                            <smartField:SmartField
+                                                id="_IDGenSmartField3"
+                                                value="{InvoiceNo}"
+                                                textLabel="Invoicie No"
+                                            />
+                                        </smartForm:GroupElement>
+
+                                        <smartForm:GroupElement
+                                            id="_IDGenGroupElement5"
+                                        >
+                                            <smartField:SmartField
+                                                id="_IDGenSmartField6"
+                                                value="{InvoiceDate}"
+                                                textLabel="Invoice Date"
+                                            />
+                                        </smartForm:GroupElement>
+
+                                        <smartForm:GroupElement
+                                            id="_IDGenGroupElement13"
+                                        >
+                                            <smartField:SmartField
+                                                id="_IDGenSmartField14"
+                                                value="{BillAmount}"
+                                                textLabel="BillAmount"
+                                            />
+                                        </smartForm:GroupElement>
+                                        <smartForm:GroupElement
+                                            id="_IDGenGroupElement14"
+                                        >
+                                            <smartField:SmartField
+                                                id="_IDGenSmartField15"
+                                                value="{LrNo}"
+                                                textLabel="Lr No"
+                                            />
+                                        </smartForm:GroupElement>
+                                        <smartForm:GroupElement
+                                            id="_IDGenGroupElement2"
+                                        >
+                                            <smartField:SmartField
+                                                id="_IDGenSmartField4"
+                                                value="{LrDate}"
+                                                textLabel="Lr Date"
+                                            />
+                                        </smartForm:GroupElement>
+                                    </smartForm:Group>
+                                    <smartForm:Group id="_IDGenGroup">
+                                        <!-- <smartForm:GroupElement
+                                            id="_IDGenGroupElement15"
+                                        >
+                                            <smartField:SmartField
+                                                id="_IDGenSmartField16"
+                                                value="{VehRepDate}"
+                                                textLabel="Veh. Reporting Date/Time"
+                                            />
+                                            <smartField:SmartField
+                                                id="_IDGenSmartField160"
+                                                value="{VehRepTime}"
+                                            />
+                                        </smartForm:GroupElement> -->
+
+                                        <smartForm:GroupElement
+                                            id="_IDGenGroupElement4"
+                                        >
+                                            <smartField:SmartField
+                                                id="_IDGenSmartField8"
+                                                enabled="true"
+                                                value="{GateInDate}"
+                                                textLabel="In Date/Time"
+                                            />
+                                            <smartField:SmartField
+                                                id="_IDGenSmartField9"
+                                                enabled="true"
+                                                value="{GateInTime}"
+                                            />
+                                        </smartForm:GroupElement>
+
+                                        <smartForm:GroupElement
+                                            id="_IDGenGroupElement16"
+                                        >
+                                            <smartField:SmartField
+                                                id="_IDGenSmartField17"
+                                                value="{TransportMode}"
+                                                textLabel="Mode of Transport"
+                                            />
+                                        </smartForm:GroupElement>
+                                        <smartForm:GroupElement
+                                            id="_IDGenGroupElement17"
+                                        >
+                                            <smartField:SmartField
+                                                id="_IDGenSmartField18"
+                                                value="{VehicleNo}"
+                                                textLabel="Vehicle No"
+                                            />
+                                        </smartForm:GroupElement>
+                                        <smartForm:GroupElement
+                                            id="_IDGenGroupElement18"
+                                        >
+                                            <smartField:SmartField
+                                                id="_IDGenSmartField190"
+                                                value="{TransporterName}"
+                                                textLabel="Transporter/Carrier Name"
+                                            />
+                                        </smartForm:GroupElement>
+
+                                        <!-- <smartForm:GroupElement
+                                            id="_IDGenGroupElement230"
+                                        >
+                                            <smartField:SmartField
+                                                id="_IDGenSmartField24"
+                                                value="{SlipNp}"
+                                                textLabel="Weighing Slip No"
+                                            />
+                                        </smartForm:GroupElement> -->
+                                        <smartForm:GroupElement
+                                            id="_IDGenGroupElement7"
+                                        >
+                                            <smartField:SmartField
+                                                id="_IDGenSmartField5"
+                                                value="{InvoiceParty}"
+                                                textLabel="Invoicing Party"
+                                            />
+                                        </smartForm:GroupElement>
+                                        <smartForm:GroupElement
+                                            id="_IDGenGroupElement8"
+                                        >
+                                            <smartField:SmartField
+                                                id="_IDGenSmartField7"
+                                                value="{InvoicePartyGST}"
+                                                textLabel="Invoicing Party GST"
+                                            />
+                                        </smartForm:GroupElement>
+                                    </smartForm:Group>
+
+                                    <smartForm:Group id="_IDGenGroup2">
+                                        <smartForm:GroupElement
+                                            id="_IDGenGroupElement26"
+                                        >
+                                            <smartField:SmartField
+                                                id="_IDGenSmartField27"
+                                                value="{DriverName}"
+                                                textLabel="Driver Name"
+                                            />
+                                        </smartForm:GroupElement>
+                                        <smartForm:GroupElement
+                                            id="_IDGenGroupElement34"
+                                        >
+                                            <smartField:SmartField
+                                                id="_IDGenSmartField35"
+                                                value="{DriverNo}"
+                                                textLabel="Driver Number"
+                                            />
+                                        </smartForm:GroupElement>
+
+                                        <smartForm:GroupElement
+                                            id="_IDGenGroupElement180"
+                                        >
+                                            <smartField:SmartField
+                                                id="_IDGenSmartField19"
+                                                value="{DriverLicenseNo}"
+                                                textLabel="Driver License No"
+                                            />
+                                        </smartForm:GroupElement>
+                                        <smartForm:GroupElement
+                                            id="_IDGenGroupElement19"
+                                        >
+                                            <smartField:SmartField
+                                                id="_IDGenSmartField20"
+                                                value="{GrossWt}"
+                                                textLabel="Gross Wt"
+                                            />
+                                        </smartForm:GroupElement>
+
+                                        <smartForm:GroupElement
+                                            id="_IDGenGroupElement20"
+                                        >
+                                            <smartField:SmartField
+                                                id="_IDGenSmartField16"
+                                                value="{TareWt}"
+                                                textLabel="Tare Wt"
+                                            />
+                                        </smartForm:GroupElement>
+
+                                        <smartForm:GroupElement
+                                            id="_IDGenGroupElement21"
+                                        >
+                                            <smartField:SmartField
+                                                id="_IDGenSmartField22"
+                                                value="{NetWt}"
+                                                textLabel="Net Wt"
+                                            />
+                                        </smartForm:GroupElement>
+
+                                        <smartForm:GroupElement
+                                            id="_IDGenGroupElement22"
+                                        >
+                                            <smartField:SmartField
+                                                id="_IDGenSmartField23"
+                                                value="{Remarks}"
+                                                textLabel="Remarks"
+                                            />
+                                        </smartForm:GroupElement>
+                                        <smartForm:GroupElement
+                                            id="_IDGenGroupElement23"
+                                        >
+                                            <smartField:SmartField
+                                                id="_IDGenSmartField240"
+                                                enabled="false"
+                                                value="{Cancelled}"
+                                                textLabel="Cancelled"
+                                            />
+                                        </smartForm:GroupElement>
+                                    </smartForm:Group>
+                                </smartForm:SmartForm>
+                            </uxap:blocks>
+                        </uxap:ObjectPageSubSection>
+                    </uxap:subSections>
+                </uxap:ObjectPageSection>
+                <uxap:ObjectPageSection
+                    titleUppercase="false"
+                    id="_IDGenPanel4"
+                    class="sapUiResponsiveMargin"
+                    title="Entry Lines"
+                    showTitle="false"
+                >
+                    <uxap:subSections>
+                        <uxap:ObjectPageSubSection
+                            id="_IDGenObjectPageSubSection2"
+                        >
+                            <uxap:blocks>
+                                <smartTable:SmartTable
+                                    id="_IDGenSmartTable2"
+                                    entitySet="GateEntryLines"
+                                    smartFilterId="_IDGenSmartFilterBar"
+                                    tableType="Table"
+                                    fieldGroupIds="Entrydate"
+                                    header="Entry Lines"
+                                    persistencyKey="SmartTableAnalytical_Explored"
+                                    enableAutoBinding="true"
+                                    class="sapUiResponsiveContentPadding"
+                                    enableAutoColumnWidth="true"
+                                    editTogglable="false"
+                                    ignoredFields="__metadata"
+                                    initiallyVisibleFields="DocumentNo,Plant,ProductCode,ProductDesc,PartyCode,PartyName,GateQty,InQty,GateValue,UOM,Remarks"
+                                    app:useSmartToggle="true"
+                                    showFullScreenButton="true"
+                                    beforeRebindTable="onBeforeRebindTable"
+                                >
+                                    <table:Table
+                                        id="_IDGenTable2"
+                                        selectionMode="MultiToggle"
+                                        rowSelectionChange="onSelectionChange"
+                                    >
+                                        <table:rowMode>
+                                            <rowmodes:Interactive
+                                                id="_IDGenInteractive"
+                                                minRowCount="5"
+                                            />
+                                        </table:rowMode>
+                                    </table:Table>
+                                    <!-- sticky="ColumnHeaders,HeaderToolbar"
+                                        inset="false"
+                                        selectionChange="onSelectionChange"
+                                        mode="MultiSelect"
+                                        growing="true" -->
+                                    <smartTable:customToolbar>
+                                        <OverflowToolbar
+                                            id="_IDGenOverflowToolbar1"
+                                        >
+                                            <ToolbarSpacer
+                                                id="_IDGenToolbarSpacer3"
+                                            />
+                                            <Button
+                                                id="_IDGenButton1"
+                                                text="Add"
+                                                visible="false"
+                                                press="onClickAddLine"
+                                            />
+                                            <Button
+                                                id="_IDGenButton2"
+                                                text="Remove"
+                                                enabled="false"
+                                                visible="false"
+                                                press="onClickRemoveLine"
+                                            />
+                                        </OverflowToolbar>
+                                    </smartTable:customToolbar>
+
+                                    <smartTable:layoutData>
+                                        <FlexItemData
+                                            id="_IDGenFlexItemData"
+                                            growFactor="1"
+                                            baseSize="0%"
+                                        />
+                                    </smartTable:layoutData>
+                                </smartTable:SmartTable>
+                            </uxap:blocks>
+                        </uxap:ObjectPageSubSection>
+                    </uxap:subSections>
+                </uxap:ObjectPageSection>
+            </uxap:sections>
+        </uxap:ObjectPageLayout>
+
+        <footer>
+            <OverflowToolbar id="_IDGenOverflowToolbar8">
+                <Button
+                    id="_IDGenButton"
+                    visible="{=!!${message>/}.length}"
+                    icon="{ path: '/', formatter: '.buttonIconFormatter' }"
+                    type="{ path: '/', formatter: '.buttonTypeFormatter' }"
+                    text="{path: '/', formatter: '.highestSeverityMessages' }"
+                    press=".handleMessagePopoverPress"
+                    ariaHasPopup="Dialog"
+                />
+                <ToolbarSpacer id="_IDGenToolbarSpacer7" />
+                <Button
+                    id="_IDGenButton17"
+                    type="Default"
+                    text="Cancel"
+                    press="cancelDisable"
+                />
+                <Button
+                    id="_IDGenButton18"
+                    type="Emphasized"
+                    text="Save"
+                    press="onClickSave"
+                />
+            </OverflowToolbar>
+        </footer>
+    </Page>
+</mvc:View>

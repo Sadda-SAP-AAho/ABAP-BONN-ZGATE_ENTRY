@@ -1,0 +1,426 @@
+<mvc:XMLView
+    id="_IDGenXMLView"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+    xmlns:l="sap.ui.layout"
+    xmlns:f="sap.ui.layout.form"
+    xmlns:core="sap.ui.core"
+    controllerName="gateentry.controller.Components.CreateHeader"
+>
+    <VBox id="_IDGenVBox2">
+        <f:SimpleForm
+            id="EntryHeader"
+            editable="true"
+            layout="ResponsiveGridLayout"
+            labelSpanXL="4"
+            labelSpanL="4"
+            labelSpanM="4"
+            labelSpanS="12"
+            adjustLabelSpan="false"
+            emptySpanXL="0"
+            emptySpanL="0"
+            emptySpanM="0"
+            emptySpanS="0"
+            columnsXL="3"
+            columnsL="3"
+            columnsM="2"
+            singleContainerFullSize="false"
+        >
+            <f:content>
+                <core:Title
+                    id="_IDGenTitle"
+                    text=""
+                />
+                <Label
+                    id="_IDGenLabel"
+                    text="{View>/EntryType/Label}"
+                />
+                <ComboBox
+                    id="EntryType"
+                    showSecondaryValues="true"
+                    value="{Header>/EntryType}"
+                    change="entryTypeChange"
+                    editable="{View>/EntryType/Editable}"
+                    required="true"
+                    items="{
+                            path: '/GateEntryType',
+                            sorter: { path: 'Value' }
+                        }"
+                >
+                    <core:ListItem
+                        id="_IDGenListItem1"
+                        text="{Value}"
+                        additionalText="{Description}"
+                    />
+                </ComboBox>
+                <Label
+                    id="_IDGenLabel1"
+                    text="Party Bill No"
+                />
+                <Input
+                    id="_IDGenInput1"
+                    value="{Header>/InvoiceNo}"
+                    liveChange="onValueChange"
+                />
+
+                <Label
+                    id="_IDGenLabel2"
+                    text="Party Bill Date"
+                />
+                <DatePicker
+                    id="DP2"
+                    valueFormat="yyyy-MM-ddTHH:mm:ss"
+                    value="{Header>/InvoiceDate}"
+                    displayFormat="dd-MM-yyyy"
+                    change="billdatechange"
+                />
+
+                <Label
+                    id="RefDocLabel"
+                    text="{View>/RefDoc/Label}"
+                    visible="{View>/RefDoc/Visible}"
+                />
+                <Input
+                    id="RefDoc"
+                    type="Text"
+                    visible="{View>/RefDoc/Visible}"
+                    showValueHelp="true"
+                    valueHelpRequest="handleDValueHelp"
+                    change="docnochange"
+                />
+
+                <Label
+                    id="BillAmountLabel"
+                    visible="{View>/BillAmount/Visible}"
+                    text="{View>/BillAmount/Label}"
+                />
+                <Input
+                    id="BillAmount"
+                    visible="{View>/BillAmount/Visible}"
+                    type="Number"
+                    value="{Header>/BillAmount}"
+                />
+
+                <Label
+                    id="_IDGenLabel14"
+                    text="LR No"
+                />
+                <Input
+                    id="_IDGenInput2"
+                    liveChange="onValueChange"
+                    value="{Header>/LrNo}"
+                />
+
+                <Label
+                    id="_IDGenLabel15"
+                    text="LR Date"
+                />
+                <DatePicker
+                    id="_IDGenDatePicker1"
+                    valueFormat="yyyy-MM-ddTHH:mm:ss"
+                    value="{Header>/LrDate}"
+                    displayFormat="dd-MM-yyyy"
+                />
+                <Label
+                    id="ExpectedReturnDateLabel"
+                    text="{View>/ExpectedReturnDate/Label}"
+                    visible="{View>/ExpectedReturnDate/Visible}"
+                />
+                <DatePicker
+                    id="ExpectedReturnDate"
+                    visible="{View>/ExpectedReturnDate/Visible}"
+                    valueFormat="yyyy-MM-ddTHH:mm:ss"
+                    value="{Header>/ExpectedReturnDate}"
+                    displayFormat="dd-MM-yyyy"
+                />
+
+                <core:Title
+                    id="_IDGenTitle2"
+                    text=""
+                />
+                <Label
+                    id="OutDateTimeLabel"
+                    text="{View>/OutDate/Label}"
+                    visible="{View>/OutDate/Visible}"
+                />
+                <DatePicker
+                    id="OutDate"
+                    visible="{View>/OutDate/Visible}"
+                    valueFormat="yyyy-MM-ddTHH:mm:ss"
+                    value="{Header>/GateOutDate}"
+                    displayFormat="dd-MM-yyyy"
+                />
+                <TimePicker
+                    id="OutTime"
+                    visible="{View>/OutDate/Visible}"
+                    value="{Header>/GateOutTime}"
+                    valueFormat="PTHH'H'mm'M'ss'S'"
+                >
+                    <layoutData>
+                        <l:GridData
+                            id="_IDGenGridData"
+                            span="XL2 L3 M3 S4"
+                        />
+                    </layoutData>
+                </TimePicker>
+                <Label
+                    id="InDateTimeLabel"
+                    visible="{View>/InDate/Visible}"
+                    text="{View>/InDate/Label}"
+                />
+                <DatePicker
+                    id="InDate"
+                    value="{Header>/GateInDate}"
+                    editable="{View>/InDate/Editable}"
+                    valueFormat="yyyy-MM-ddTHH:mm:ss"
+                    visible="{View>/InDate/Visible}"
+                    displayFormat="dd-MM-yyyy"
+                />
+                <TimePicker
+                    id="InTime"
+                    value="{Header>/GateInTime}"
+                    editable="{View>/InDate/Editable}"
+                    displayFormat='HH:mm'
+                    visible="{View>/InDate/Visible}"
+                    valueFormat="PTHH'H'mm'M'ss'S'"
+                >
+                    <layoutData>
+                        <l:GridData
+                            id="_IDGenGridData1"
+                            span="XL2 L3 M3 S4"
+                        />
+                    </layoutData>
+                </TimePicker>
+                <Label
+                    id="_IDGenLabel6"
+                    text="Mode of Transport"
+                />
+                <Input
+                    id="_IDGenInput8"
+                    value="{Header>/TransportMode}"
+                    liveChange="onValueChange"
+                    type="Text"
+                />
+                <Label
+                    id="_IDGenLabel8"
+                    text="Transporter/Carrier Name"
+                />
+                <Input
+                    id="_IDGenInput3"
+                    value="{Header>/TransporterName}"
+                />
+
+                <Label
+                    id="_IDGenLabel7"
+                    text="Vehicle No"
+                    required="true"
+                />
+                <Input
+                    id="_IDGenInput9"
+                    value="{Header>/VehicleNo}"
+                    type="Text"
+                    liveChange="onValueChange"
+                />
+                <!-- <Label
+                    id="_IDGenLabel16"
+                    text="Weighing Slip No"
+                />
+                <Input
+                    id="_IDGenInput4"
+                    value="{Header>/SlipNo}"
+                /> -->
+
+                <Label
+                    id="InvoicePartyLabel"
+                    text="{View>/InvoiceParty/Label}"
+                    required="{View>/InvoiceParty/Required}"
+                />
+
+                <Input
+                    id="InvoiceParty"
+                    type="Text"
+                    showValueHelp="true"
+                    editable="{View>/InvoiceParty/Editable}"
+                    change="InvoicePartyChange"
+                    valueHelpRequest="handlePTCValueHelp"
+                    value="{Header>/InvoiceParty}"
+                    showSuggestion="true"
+                    showTableSuggestionValueHelp="true"
+                    suggestionRows="{/InvoicePartyVH}"
+                    suggestionItemSelected="onSuggestionItemSelectedPTC"
+                >
+                    <suggestionColumns>
+                        <Column
+                            id="_IDGenColumn20"
+                            popinDisplay="Inline"
+                            minScreenWidth="Tablet"
+                        >
+                            <Label
+                                id="_IDGenLabel16"
+                                text="Party Code"
+                            />
+                        </Column>
+                        <Column
+                            id="_IDGenColumn23"
+                            popinDisplay="Inline"
+                            minScreenWidth="Tablet"
+                        >
+                            <Label
+                                id="_IDGenLabel33"
+                                text="Party Name"
+                            />
+                        </Column>
+                        <Column
+                            id="_IDGenColumn24"
+                            popinDisplay="Inline"
+                            minScreenWidth="Tablet"
+                        >
+                            <Label
+                                id="_IDGenLabel38"
+                                text="PAN Number"
+                            />
+                        </Column>
+                        <Column
+                            id="_IDGenColumn25"
+                            popinDisplay="Inline"
+                            minScreenWidth="Tablet"
+                        >
+                            <Label
+                                id="_IDGenLabel41"
+                                text="Tax Number"
+                            />
+                        </Column>
+                    </suggestionColumns>
+
+                    <suggestionRows>
+                        <ColumnListItem id="_IDGenColumnListItem">
+                            <Label
+                                id="_IDGenLabel34"
+                                text="{InvoicingParty}"
+                            />
+                            <Label
+                                id="_IDGenLabel37"
+                                text="{InvoicingPartyName}"
+                            />
+                            <Label
+                                id="_IDGenLabel43"
+                                text="{InvoicingPartyPAN}"
+                            />
+                            <Label
+                                id="_IDGenLabel44"
+                                text="{InvoicingPartyGST}"
+                            />
+                        </ColumnListItem>
+                    </suggestionRows>
+                </Input>
+
+                <Label
+                    id="InvoicePartyNameLabel"
+                    text="{View>/InvoicePartyName/Label}"
+                    visible="{View>/InvoicePartyName/Visible}"
+                />
+                <Input
+                    id="InvoicePartyName"
+                    value="{Header>/InvoicePartyName}"
+                    visible="{View>/InvoicePartyName/Visible}"
+                    editable="{View>/InvoicePartyName/Editable}"
+                />
+
+                <Label
+                    id="_IDGenLabel25"
+                    text="{View>/InvoicePartyGST/Label}"
+                />
+                <Input
+                    liveChange="onValueChange"
+                    id="_IDGenInput6"
+                    editable="{View>/InvoicePartyGST/Editable}"
+                    value="{Header>/InvoicePartyGST}"
+                />
+                <core:Title
+                    id="_IDGenTitle3"
+                    text=""
+                />
+
+                <RadioButtonGroup
+                    id="rbg1"
+                    select="indicatorChange"
+                    columns="2"
+                >
+                    <RadioButton
+                        id="RB1-1"
+                        text="WB Indicator"
+                    />
+                    <RadioButton
+                        id="RB1-2"
+                        selected="true"
+                        text="Manual"
+                    />
+                </RadioButtonGroup>
+
+                <Label
+                    id="_IDGenLabel3"
+                    text="Driver Name"
+                />
+                <Input
+                    id="_IDGenInput12"
+                    value="{Header>/DriverName}"
+                />
+                <Label
+                    id="_IDGenLabel9"
+                    text="Driver Number"
+                />
+                <Input
+                    id="_IDGenInput14"
+                    value="{Header>/DriverNo}"
+                />
+                <Label
+                    id="_IDGenLabel10"
+                    text="Driver License No"
+                />
+                <Input
+                    id="_IDGenInput15"
+                    liveChange="onValueChange"
+                    value="{Header>/DriverLicenseNo}"
+                />
+                <Label
+                    id="_IDGenLabel27"
+                    text="Remarks"
+                />
+                <Input
+                    id="_IDGenInput17"
+                    value="{Header>/Remarks}"
+                />
+                <Label
+                    id="_IDGenLabel26"
+                    text="Gross Wt"
+                />
+                <Input
+                    id="_IDGenInput16"
+                    value="{Header>/GrossWt}"
+                    change="grosswtChange"
+                    type="Number"
+                />
+                <Label
+                    id="_IDGenLabel5"
+                    text="Tare Wt"
+                />
+                <Input
+                    id="_IDGenInput"
+                    value="{Header>/TareWt}"
+                    type="Number"
+                    change="tarewtChange"
+                />
+                <Label
+                    id="_IDGenLabel11"
+                    text="Net Wt"
+                />
+                <Input
+                    id="_IDGenInput5"
+                    value="{Header>/NetWt}"
+                    type="Number"
+                    editable="false"
+                />
+            </f:content>
+        </f:SimpleForm>
+    </VBox>
+</mvc:XMLView>

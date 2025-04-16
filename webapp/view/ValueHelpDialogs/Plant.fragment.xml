@@ -1,0 +1,86 @@
+<core:FragmentDefinition
+    xmlns="sap.ui.comp.valuehelpdialog"
+    xmlns:m="sap.m"
+    xmlns:fb="sap.ui.comp.filterbar"
+    xmlns:core="sap.ui.core"
+    xmlns:f="sap.ui.layout.form"
+    xmlns:mvc="sap.ui.core.mvc"
+>
+    <ValueHelpDialog
+        id="_IDGenValueHelpDialog"
+        title="Plant"
+        ok=".onPlantVHokPress"
+        cancel=".onPlantVHcancelPress"
+        afterClose=".onPlantVHAfterClosePress"
+        supportRanges="true"
+        key="Plant"
+        descriptionKey="PlantName"
+    >
+        <filterBar>
+            <fb:FilterBar
+                id="_IDGenFilterBar1"
+                advancedMode="true"
+                search=".onPlantVHSearchPress"
+                isRunningInValueHelpDialog="true"
+            >
+                <fb:filterGroupItems>
+                    <fb:FilterGroupItem
+                        id="_IDGenFilterGroupItem2"
+                        groupName="__$INTERNAL$"
+                        name="Plant"
+                        label="Plant"
+                        visibleInFilterBar="true"
+                    >
+                        <fb:control>
+                            <m:Input
+                                id="_IDGenInput26"
+                                name="Plant"
+                                showSuggestion="true"
+                                showValueHelp="false"
+                                suggestionItems="{
+							   path: '/Plant',
+							   sorter: { path: 'Plant' }
+						    }"
+                            >
+                                <core:Item
+                                    id="_IDGenItem3"
+                                    key="{Plant}"
+                                    text="{
+									path: 'Plant',
+									formatter : '.vhformatter'
+								}"
+                                />
+                            </m:Input>
+                        </fb:control>
+                    </fb:FilterGroupItem>
+                    <fb:FilterGroupItem
+                        id="_IDGenFilterGroupItem3"
+                        groupName="__$INTERNAL$"
+                        name="PlantName"
+                        label="Plant Name"
+                        visibleInFilterBar="true"
+                    >
+                        <fb:control>
+                            <m:Input
+                                id="_IDGenInput27"
+                                name="PlantName"
+                                showSuggestion="true"
+                                showValueHelp="false"
+                                suggestionItems="{
+								path: '/Plant',
+								sorter: { path: 'PlantName' }
+							}"
+                            >
+                                <core:Item
+                                    id="_IDGenItem4"
+                                    key="{PlantName}"
+                                    text="{PlantName}"
+                                />
+                            </m:Input>
+                        </fb:control>
+                    </fb:FilterGroupItem>
+                </fb:filterGroupItems>
+            </fb:FilterBar>
+        </filterBar>
+    </ValueHelpDialog>
+</core:FragmentDefinition>

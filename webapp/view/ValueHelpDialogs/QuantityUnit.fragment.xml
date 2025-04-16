@@ -1,0 +1,113 @@
+<core:FragmentDefinition
+    xmlns="sap.ui.comp.valuehelpdialog"
+    xmlns:m="sap.m"
+    xmlns:fb="sap.ui.comp.filterbar"
+    xmlns:core="sap.ui.core"
+    xmlns:f="sap.ui.layout.form"
+    xmlns:mvc="sap.ui.core.mvc"
+>
+    <ValueHelpDialog
+        id="_IDGenValueHelpDialog4"
+        title="UnitOfMeasure"
+        ok=".onQUVHokPress"
+        cancel=".onQUVHcancelPress"
+        afterClose=".onQUVHAfterClosePress"
+        supportRanges="true"
+        key="UnitOfMeasure"
+        descriptionKey="UnitOfMeasure_Text"
+    >
+        <filterBar>
+            <fb:FilterBar
+                id="_IDGenFilterBar3"
+                advancedMode="true"
+                search=".onQUVHSearchPress"
+                isRunningInValueHelpDialog="true"
+            >
+                <fb:filterGroupItems>
+                    <fb:FilterGroupItem
+                        id="_IDGenFilterGroupItem7"
+                        groupName="__$INTERNAL$"
+                        name="UnitOfMeasure"
+                        label="UnitOfMeasure"
+                        visibleInFilterBar="true"
+                    >
+                        <fb:control>
+                            <m:Input id="_IDGenInput25"
+                                name="UnitOfMeasure"
+                                showSuggestion="true"
+                                showValueHelp="false"
+                                suggestionItems="{
+							   path: '/UnitOfMeasure',
+							   sorter: { path: 'UnitOfMeasure' }
+						    }"
+                            >
+                                <core:Item
+                                    id="_IDGenItem2"
+                                    key="{UnitOfMeasure}"
+                                    text="{
+									path: 'UnitOfMeasure',
+									formatter : '.vhformatter'
+								}"
+                                />
+                            </m:Input>
+                        </fb:control>
+                    </fb:FilterGroupItem>
+                    <fb:FilterGroupItem
+                        id="_IDGenFilterGroupItem8"
+                        groupName="__$INTERNAL$"
+                        name="UnitOfMeasure_Text"
+                        label="Meas. Unit Text"
+                        visibleInFilterBar="true"
+                    >
+                        <fb:control>
+                            <m:Input id="_IDGenInput28"
+                                name="UnitOfMeasure_Text"
+                                showSuggestion="true"
+                                showValueHelp="false"
+                                suggestionItems="{
+								path: '/UnitOfMeasure',
+								sorter: { path: 'UnitOfMeasure_Text' }
+							}"
+                            >
+                                <core:Item
+                                    id="_IDGenItem8"
+                                    key="{UnitOfMeasure_Text}"
+                                    text="{UnitOfMeasure_Text}"
+                                />
+                            </m:Input>
+                        </fb:control>
+                    </fb:FilterGroupItem>
+
+                    <fb:FilterGroupItem
+                        id="_IDGenFilterGroupItem9"
+                        groupName="__$INTERNAL$"
+                        name="UnitOfMeasureDimension"
+                        label="Meas. Unit Text"
+                        visibleInFilterBar="true"
+                    >
+                        <fb:control>
+                            <m:Input
+                                id="_IDGenInput7"
+                                name="UnitOfMeasureDimension"
+                                showSuggestion="true"
+                                showValueHelp="false"
+                                suggestionItems="{
+								path: '/UnitOfMeasure',
+								sorter: { path: 'UnitOfMeasureDimension' }
+							}"
+                            >
+                                <core:Item
+                                    id="_IDGenItem9"
+                                    key="{UnitOfMeasureDimension}"
+                                    text="{UnitOfMeasureDimension}"
+                                />
+                            </m:Input>
+                        </fb:control>
+                    </fb:FilterGroupItem>
+
+                  
+                </fb:filterGroupItems>
+            </fb:FilterBar>
+        </filterBar>
+    </ValueHelpDialog>
+</core:FragmentDefinition>

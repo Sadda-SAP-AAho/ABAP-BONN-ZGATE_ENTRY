@@ -1,0 +1,29 @@
+specVersion: "3.1"
+metadata:
+  name: gateentry
+type: application
+builder:
+  customTasks:
+    - name: ui5-tooling-transpile-task
+      afterTask: replaceVersion
+      configuration:
+        debug: true
+        transformModulesToUI5:
+          overridesToOverride: true
+    - name: deploy-to-abap
+      afterTask: generateCachebusterInfo
+      configuration:
+        target:
+          destination: MY418731
+          url: https://my418731.s4hana.cloud.sap
+          authenticationType: reentranceTicket
+        app:
+          name: ZGATEENTRY
+          package: ZGATE_ENTRY
+          transport: NXSK900973
+        exclude:
+          - /test/
+  resources:
+    excludes:
+      - /test/**
+      - /localService/**

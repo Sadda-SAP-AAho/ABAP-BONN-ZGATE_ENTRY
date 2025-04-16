@@ -1,0 +1,78 @@
+<core:FragmentDefinition
+    xmlns="sap.ui.comp.valuehelpdialog"
+    xmlns:m="sap.m"
+    xmlns:fb="sap.ui.comp.filterbar"
+    xmlns:core="sap.ui.core"
+    xmlns:f="sap.ui.layout.form"
+    xmlns:mvc="sap.ui.core.mvc"
+>
+    <ValueHelpDialog id="_IDGenValueHelpDialog1" 
+        title="Party Code"
+        ok=".onPTCVHokPress"
+        cancel=".onPTCVHcancelPress"
+        afterClose=".onPTCVHAfterClosePress"
+        supportRanges="true"
+        key="InvoicingParty"
+        descriptionKey="InvoicingPartyName"
+    >
+        <filterBar>
+            <fb:FilterBar id="_IDGenFilterBar" 
+                advancedMode="true"
+                search=".onPTCVHSearchPress"
+                isRunningInValueHelpDialog="true"
+            >
+                <fb:filterGroupItems>
+                    <fb:FilterGroupItem id="_IDGenFilterGroupItem" 
+                        groupName="__$INTERNAL$"
+                        name="InvoicingParty"
+                        label="InvoicingParty"
+                        visibleInFilterBar="true"
+                    >
+                        <fb:control>
+                            <m:Input id="_IDGenInput21" 
+                                name="InvoicingParty"
+                                showSuggestion="true"
+                                showValueHelp="false"
+                                suggestionItems="{
+							   path: '/InvoicePartyVH',
+							   sorter: { path: 'InvoicingParty' }
+						    }"
+                            >
+                                <core:Item id="_IDGenItem" 
+                                    key="{InvoicingParty}"
+                                    text="{
+									path: 'InvoicingParty',
+									formatter : '.vhformatter'
+								}"
+                                />
+                            </m:Input>
+                        </fb:control>
+                    </fb:FilterGroupItem>
+                    <fb:FilterGroupItem id="_IDGenFilterGroupItem1" 
+                        groupName="__$INTERNAL$"
+                        name="InvoicingPartyName"
+                        label="Description"
+                        visibleInFilterBar="true"
+                    >
+                        <fb:control>
+                            <m:Input id="_IDGenInput29" 
+                                name="InvoicingPartyName"
+                                showSuggestion="true"
+                                showValueHelp="false"
+                                suggestionItems="{
+								path: '/InvoicePartyVH',
+								sorter: { path: 'InvoicingPartyName' }
+							}"
+                            >
+                                <core:Item id="_IDGenItem1" 
+                                    key="{InvoicingPartyName}"
+                                    text="{InvoicingPartyName}"
+                                />
+                            </m:Input>
+                        </fb:control>
+                    </fb:FilterGroupItem>
+                </fb:filterGroupItems>
+            </fb:FilterBar>
+        </filterBar>
+    </ValueHelpDialog>
+</core:FragmentDefinition>

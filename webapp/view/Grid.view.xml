@@ -1,0 +1,164 @@
+<mvc:View
+    xmlns="sap.m"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:smartFilterBar="sap.ui.comp.smartfilterbar"
+    xmlns:smartTable="sap.ui.comp.smarttable"
+    xmlns:l="sap.ui.layout"
+    xmlns:core="sap.ui.core"
+    xmlns:html="http://www.w3.org/1999/xhtml"
+    xmlns:app="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1"
+    controllerName="gateentry.controller.Grid"
+    height="100%"
+>
+    <VBox
+        id="_IDGenVBox1"
+        fitContainer="true"
+    >
+        <smartFilterBar:SmartFilterBar
+            id="_IDGenSmartFilterBar"
+            entitySet="GateEntryHeader"
+            persistencyKey="SmartFilter_Explored"
+        >
+            <smartFilterBar:controlConfiguration>
+                <smartFilterBar:ControlConfiguration
+                    id="_IDGenControlConfiguration"
+                    key="EntryDate"
+                    visibleInAdvancedArea="true"
+                >
+                    <smartFilterBar:defaultFilterValues>
+                        <smartFilterBar:SelectOption
+                            id="_IDGenSelectOption"
+                            low="{path: '/currentDate', type: 'sap.ui.model.type.Date', formatOptions: {pattern: 'yyyy-MM-dd'}}"
+                        />
+                    </smartFilterBar:defaultFilterValues>
+                </smartFilterBar:ControlConfiguration>
+                <smartFilterBar:ControlConfiguration
+                    id="_IDGenControlConfiguration1"
+                    key="EntryType"
+                    filterType="single"
+                    visibleInAdvancedArea="true"
+                >
+                    <smartFilterBar:customControl>
+                        <Select
+                            id="_IDGenSelect1"
+                            showSecondaryValues="true"
+                            change="entryTypeChange"
+                            items="{
+							path: '/GateEntryType',
+							sorter: { path: 'Value' }
+						}"
+                        >
+                            <core:ListItem
+                                id="_IDGenListItem"
+                                text="{Value}"
+                                additionalText="{Description}"
+                            />
+                        </Select>
+                    </smartFilterBar:customControl>
+                </smartFilterBar:ControlConfiguration>
+
+                <smartFilterBar:ControlConfiguration id="_IDGenControlConfiguration2"
+                    key="GateEntryNo"
+                    visibleInAdvancedArea="true"
+                />
+            </smartFilterBar:controlConfiguration>
+            <smartFilterBar:layoutData>
+                <FlexItemData
+                    id="_IDGenFlexItemData1"
+                    shrinkFactor="0"
+                />
+            </smartFilterBar:layoutData>
+        </smartFilterBar:SmartFilterBar>
+        <smartTable:SmartTable
+            id="_IDGenSmartTable"
+            entitySet="GateEntryHeader"
+            smartFilterId="_IDGenSmartFilterBar"
+            tableType="Table"
+            fieldGroupIds="Entrydate"
+            header="Gate Entry"
+            persistencyKey="SmartTableAnalytical_Explored"
+            enableAutoBinding="true"
+            class="sapUiResponsiveContentPadding"
+            enableAutoColumnWidth="true"
+            editTogglable="false"
+            ignoredFields="__metadata,GateOutward"
+            initiallyVisibleFields="GateEntryNo,EntryDate,Plant,EntryType,OperatorName,Cancelled,TransportMode,InvoiceNo,InvoiceDate,VehicleNo,GateOutDate"
+            app:useSmartToggle="true"
+            showFullScreenButton="true"
+            beforeRebindTable="onBeforeRebindTable"
+        >
+            <Table
+                id="_IDGenTable"
+                sticky="ColumnHeaders,HeaderToolbar"
+                inset="false"
+                selectionChange="onSelectionChange"
+                mode="SingleSelectLeft"
+                growing="true"
+            >
+                <items>
+                    <ColumnListItem
+                        press="navigate"
+                        id="_IDGenColumnListItem1"
+                        vAlign="Middle"
+                        type="Navigation"
+                    />
+                </items>
+            </Table>
+
+            <smartTable:customToolbar>
+                <OverflowToolbar id="_IDGenOverflowToolbar2">
+                    <ToolbarSpacer id="_IDGenToolbarSpacer1" />
+                    <Button
+                        id="_IDGenButton4"
+                        text="Create"
+                        press="onClickCreate"
+                    />
+                    <Button
+                        id="_IDGenButton8"
+                        text="Gate Out"
+                        press="gateOut"
+                        enabled="false"
+                    />
+                    <Button
+                        id="_IDGenButton01"
+                        text="RGP IN"
+                        press="onClickRGPIN"
+                        enabled="false"
+                    />
+                    <Button
+                        id="_IDGenButton02"
+                        text="RGP OUT"
+                        press="onClickRGPOUT"
+                        enabled="false"
+                    />
+                    <Button
+                        id="_IDGenButton03"
+                        text="NRGP"
+                        press="onClickNRGP"
+                        enabled="false"
+                    />
+                    <Button
+                        id="_IDGenButton04"
+                        text="GatePass Inward"
+                        press="onClickGAtepassInward"
+                        enabled="false"
+                    />
+                    <Button
+                        id="_IDGenButton05"
+                        text="GatePass Purchase"
+                        press="onClickGatepassPurchase"
+                        enabled="false"
+                    />
+                </OverflowToolbar>
+            </smartTable:customToolbar>
+
+            <smartTable:layoutData>
+                <FlexItemData
+                    id="_IDGenFlexItemData2"
+                    growFactor="1"
+                    baseSize="0%"
+                />
+            </smartTable:layoutData>
+        </smartTable:SmartTable>
+    </VBox>
+</mvc:View>

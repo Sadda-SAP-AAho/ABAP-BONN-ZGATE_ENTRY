@@ -1,0 +1,169 @@
+{
+  "_version": "1.64.0",
+  "sap.app": {
+    "id": "gateentry",
+    "type": "application",
+    "i18n": "i18n/i18n.properties",
+    "applicationVersion": {
+      "version": "0.0.1"
+    },
+    "title": "{{appTitle}}",
+    "description": "{{appDescription}}",
+    "resources": "resources.json",
+    "sourceTemplate": {
+      "id": "@sap/generator-fiori:basic",
+      "version": "1.16.3",
+      "toolsId": "ca373e51-cfe8-4cb5-b54f-9d892f24e86e"
+    },
+    "dataSources": {
+      "mainService": {
+        "uri": "/sap/opu/odata/sap/ZUI_GATEENTRY/",
+        "type": "OData",
+        "settings": {
+          "annotations": [
+            "ZUI_GATEENTRY_VAN"
+          ],
+          "localUri": "localService/metadata.xml",
+          "odataVersion": "2.0"
+        }
+      },
+      "ZUI_GATEENTRY_VAN": {
+        "uri": "/sap/opu/odata/IWFND/CATALOGSERVICE;v=2/Annotations(TechnicalName='ZUI_GATEENTRY_VAN',Version='0001')/$value/",
+        "type": "ODataAnnotation",
+        "settings": {
+          "localUri": "localService/ZUI_GATEENTRY_VAN.xml"
+        }
+      }
+    },
+    "crossNavigation": {
+      "inbounds": {
+        "zgateentry-Maintain": {
+          "semanticObject": "zgateentry",
+          "action": "Maintain",
+          "title": "{{flpTitle}}",
+          "subTitle": "{{flpSubtitle}}",
+          "signature": {
+            "parameters": {},
+            "additionalParameters": "allowed"
+          }
+        }
+      }
+    }
+  },
+  "sap.ui": {
+    "technology": "UI5",
+    "icons": {
+      "icon": "",
+      "favIcon": "",
+      "phone": "",
+      "phone@2": "",
+      "tablet": "",
+      "tablet@2": ""
+    },
+    "deviceTypes": {
+      "desktop": true,
+      "tablet": true,
+      "phone": true
+    }
+  },
+  "sap.ui5": {
+    "flexEnabled": true,
+    "dependencies": {
+      "minUI5Version": "1.124.11",
+      "libs": {
+        "sap.m": {},
+        "sap.ui.core": {}
+      }
+    },
+    "contentDensities": {
+      "compact": true,
+      "cozy": true
+    },
+    "models": {
+      "i18n": {
+        "type": "sap.ui.model.resource.ResourceModel",
+        "settings": {
+          "bundleName": "gateentry.i18n.i18n"
+        }
+      },
+      "": {
+        "dataSource": "mainService",
+        "preload": true,
+        "settings": {}
+      }
+    },
+    "resources": {
+      "css": [
+        {
+          "uri": "css/style.css"
+        }
+      ]
+    },
+    "routing": {
+      "config": {
+        "routerClass": "sap.m.routing.Router",
+        "controlAggregation": "pages",
+        "controlId": "app",
+        "transition": "slide",
+        "type": "View",
+        "viewType": "XML",
+        "path": "gateentry.view",
+        "async": true,
+        "viewPath": "gateentry.view"
+      },
+      "routes": [
+        {
+          "name": "GateEntryMaintain",
+          "pattern": ":?query:",
+          "target": [
+            "TargetGrid"
+          ]
+        },
+        {
+          "name": "GateEntryDetails",
+          "pattern": "GateEntry-Details/{GateEntry}",
+          "target": [
+            "TargetDetails"
+          ]
+        },
+        {
+          "name": "GateEntryOut",
+          "pattern": "GateEntry-GateOut/{GateEntry}",
+          "target": [
+            "TargetGateOut"
+          ]
+        },
+        {
+          "name": "GateEntryCreate",
+          "pattern": "GateEntry-Create",
+          "target": [
+            "TargetCreate"
+          ]
+        }
+      ],
+      "targets": {
+        "TargetGrid": {
+          "id": "GateEntryMaintain",
+          "name": "Grid"
+        },
+        "TargetDetails": {
+          "viewId": "GateEntryDetails",
+          "viewName": "Details"
+        },
+        "TargetCreate": {
+          "viewId": "GateEntryCreate",
+          "viewName": "Create"
+        },
+        "TargetGateOut": {
+          "viewId": "GateEntryOut",
+          "viewName": "GateOut"
+        }
+      }
+    },
+    "rootView": {
+      "viewName": "gateentry.view.App",
+      "type": "XML",
+      "id": "App"
+    }
+  }
+}

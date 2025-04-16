@@ -1,0 +1,26 @@
+/* Enter your custom styles here */
+@media (min-width: 80rem) {
+    .sapUiMedia-Std-Desktop .sapUShellApplicationContainer.sapUShellApplicationContainerLimitedWidth {
+        width: 100%!important;
+    }
+}
+
+[id$="---GateEntryMaintain--_IDGenTable"] {
+    height: 63vh;
+    overflow-y: auto;
+}
+
+[id$="--createHeaderForm--_IDGenTitle"],
+[id$="--createHeaderForm--_IDGenTitle2"],
+[id$="--createHeaderForm--_IDGenTitle3"]{
+    display: none!important;
+}
+
+.sapUiFormResGrid>div{
+    padding: unset!important;
+}
+
+.sapUxAPObjectPageSection{
+    margin-left: unset!important;
+    margin-right: unset!important;
+}

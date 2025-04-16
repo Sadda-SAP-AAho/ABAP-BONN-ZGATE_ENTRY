@@ -1,0 +1,388 @@
+<mvc:View
+    xmlns:rowmodes="sap.ui.table.rowmodes"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:m="sap.m"
+    xmlns:core="sap.ui.core"
+    xmlns:t="sap.ui.table"
+    controllerName="gateentry.controller.Components.AddLines"
+>
+    <t:Table
+        rows="{Details>/OrderDetailsTable}"
+        id="_IDGenTable1"
+    >
+        <t:extension>
+            <m:OverflowToolbar style="Clear">
+                <m:Title text="Gate Entry Lines" />
+                <m:ToolbarSpacer />
+                <m:Button
+                    icon="sap-icon://add"
+                    press="addLine"
+                />
+                <m:Button
+                    icon="sap-icon://delete"
+                    press="deleteLine"
+                />
+            </m:OverflowToolbar>
+        </t:extension>
+        <t:rowMode>
+            <rowmodes:Interactive minRowCount="5" />
+        </t:rowMode>
+        <t:columns>
+            <t:Column
+                width="11rem"
+                visible="{View>/DocumentNo/Visible}"
+            >
+                <m:Label text="{View>/DocumentNo/Label}" />
+                <t:template>
+                    <m:Text text="{Details>DocumentNo}" />
+                </t:template>
+            </t:Column>
+
+            <t:Column
+                width="11rem"
+                visible="{View>/DocumentItemNo/Visible}"
+            >
+                <m:Label text="{View>/DocumentItemNo/Label}" />
+                <t:template>
+                    <m:Text text="{Details>DocumentItemNo}" />
+                </t:template>
+            </t:Column>
+
+            <t:Column
+                width="11rem"
+                visible="{View>/Plant/Visible}"
+            >
+                <m:Label text="{View>/Plant/Label}" />
+                <t:template>
+                    <m:Input
+                        class="sapUiSmallMarginBottom"
+                        type="Text"
+                        editable="{= ${Details>DocumentNo} === ''}"
+                        showValueHelp="true"
+                        valueHelpRequest="handlePlantValueHelp"
+                        value="{Details>Plant}"
+                        showSuggestion="true"
+                        showTableSuggestionValueHelp="true"
+                        suggestionRows="{/Plant}"
+                        suggestionItemSelected="onSuggestionItemSelectedPlant"
+                    >
+                        <m:suggestionColumns>
+                            <m:Column
+                                popinDisplay="Inline"
+                                demandPopin="true"
+                            >
+                                <m:Label text="Plant" />
+                            </m:Column>
+                            <m:Column
+                                popinDisplay="Inline"
+                                demandPopin="true"
+                                minScreenWidth="Tablet"
+                            >
+                                <m:Label text="Name" />
+                            </m:Column>
+                        </m:suggestionColumns>
+
+                        <m:suggestionRows>
+                            <m:ColumnListItem>
+                                <m:Text text="{Plant}" />
+                                <m:Text text="{PlantName}" />
+                            </m:ColumnListItem>
+                        </m:suggestionRows>
+                    </m:Input>
+                </t:template>
+            </t:Column>
+
+            <t:Column
+                width="11rem"
+                visible="{View>/SLoc/Visible}"
+            >
+                <m:Label text="{View>/SLoc/Label}" />
+                <t:template>
+                    <m:Input
+                        editable="{View>/SLoc/Editable}"
+                        value="{Details>SLoc}"
+                    />
+                </t:template>
+            </t:Column>
+
+            <t:Column
+                width="15rem"
+                visible="{View>/ProductCode/Visible}"
+            >
+                <m:Label text="{View>/ProductCode/Label}" />
+
+                <t:template>
+                    <m:Input
+                        class="sapUiSmallMarginBottom"
+                        type="Text"
+                        editable="{= ${Details>DocumentNo} === ''}"
+                        showValueHelp="true"
+                        valueHelpRequest="handlePCValueHelp"
+                        value="{Details>ProductCode}"
+                        showSuggestion="true"
+                        showTableSuggestionValueHelp="true"
+                        suggestionRows="{/ProductStdVH}"
+                        suggestionItemSelected="onSuggestionItemSelectedPC"
+                    >
+                        <m:suggestionColumns>
+                            <m:Column
+                                popinDisplay="Inline"
+                                demandPopin="true"
+                            >
+                                <m:Label text="Product" />
+                            </m:Column>
+                            <m:Column
+                                popinDisplay="Inline"
+                                demandPopin="true"
+                                minScreenWidth="Tablet"
+                            >
+                                <m:Label text="Description" />
+                            </m:Column>
+                            <m:Column
+                                popinDisplay="Inline"
+                                minScreenWidth="Tablet"
+                            >
+                                <m:Label text="Unit" />
+                            </m:Column>
+                            <m:Column
+                                popinDisplay="Inline"
+                                minScreenWidth="Tablet"
+                            >
+                                <m:Label text="Unit Name" />
+                            </m:Column>
+                        </m:suggestionColumns>
+
+                        <m:suggestionRows>
+                            <m:ColumnListItem>
+                                <m:Label text="{Product}" />
+                                <m:Label text="{ProductDescription}" />
+                                <m:Label text="{BaseUnit}" />
+                                <m:Label text="{UnitOfMeasureLongName}" />
+                            </m:ColumnListItem>
+                        </m:suggestionRows>
+                    </m:Input>
+                </t:template>
+            </t:Column>
+
+            <t:Column
+                width="11rem"
+                visible="{View>/ProductDesc/Visible}"
+            >
+                <m:Label text="{View>/ProductDesc/Label}" />
+                <t:template>
+                    <m:Input
+                        value="{Details>ProductDesc}"
+                        editable="{= ${Details>DocumentNo} === ''}"
+                    />
+                </t:template>
+            </t:Column>
+
+            <t:Column
+                width="11rem"
+                visible="{View>/PartyCode/Visible}"
+            >
+                <m:Label text="{View>/PartyCode/Label}" />
+                <t:template>
+                    <m:Input
+                        class="sapUiSmallMarginBottom"
+                        type="Text"
+                        editable="{= ${Details>DocumentNo} === ''}"
+                        showValueHelp="true"
+                        valueHelpRequest="handlePTCValueHelp"
+                        value="{Details>PartyCode}"
+                        showSuggestion="true"
+                        showTableSuggestionValueHelp="true"
+                        suggestionRows="{/InvoicePartyVH}"
+                        suggestionItemSelected="onSuggestionItemSelectedPTC"
+                    >
+                        <m:suggestionColumns>
+                            <m:Column
+                                popinDisplay="Inline"
+                                minScreenWidth="Tablet"
+                            >
+                                <m:Label text="Party Code" />
+                            </m:Column>
+                            <m:Column
+                                popinDisplay="Inline"
+                                minScreenWidth="Tablet"
+                            >
+                                <m:Label text="Party Name" />
+                            </m:Column>
+                            <m:Column
+                                popinDisplay="Inline"
+                                minScreenWidth="Tablet"
+                            >
+                                <m:Label text="PAN Number" />
+                            </m:Column>
+                            <m:Column
+                                popinDisplay="Inline"
+                                minScreenWidth="Tablet"
+                            >
+                                <m:Label text="Tax Number" />
+                            </m:Column>
+                        </m:suggestionColumns>
+
+                        <m:suggestionRows>
+                            <m:ColumnListItem>
+                                <m:Label text="{InvoicingParty}" />
+                                <m:Label text="{InvoicingPartyName}" />
+                                <m:Label text="{InvoicingPartyPAN}" />
+                                <m:Label text="{InvoicingPartyGST}" />
+                            </m:ColumnListItem>
+                        </m:suggestionRows>
+                    </m:Input>
+                </t:template>
+            </t:Column>
+
+            <t:Column
+                width="11rem"
+                visible="{View>/PartyName/Visible}"
+            >
+                <m:Label text="{View>/PartyName/Label}" />
+                <t:template>
+                    <m:Input value="{Details>PartyName}" editable="{= ${Details>DocumentNo} === ''}"  />
+                </t:template>
+            </t:Column>
+
+            <t:Column
+                width="11rem"
+                visible="{View>/GateQty/Visible}"
+            >
+                <m:Label text="{View>/GateQty/Label}" />
+                <t:template>
+                    <m:Input
+                        change="gateQtyChange"
+                        value="{Details>GateQty}"
+                        editable="{View>/GateQty/Editable}"
+                    />
+                </t:template>
+            </t:Column>
+            <t:Column
+                width="11rem"
+                visible="{View>/InQty/Visible}"
+            >
+                <m:Label text="{View>/InQty/Label}" />
+                <t:template>
+                    <m:Input
+                        change="InQtyChange"
+                        value="{Details>InQty}"
+                        editable="{View>/InQty/Editable}"
+                    />
+                </t:template>
+            </t:Column>
+
+            <t:Column
+                width="11rem"
+                visible="{View>/Rate/Visible}"
+            >
+                <m:Label text="{View>/Rate/Label}" />
+                <t:template>
+                    <m:Input
+                        change="rateChange"
+                        value="{Details>Rate}"
+                        editable="{= ${Details>DocumentNo} === ''}"
+                    />
+                </t:template>
+            </t:Column>
+
+            <t:Column
+                width="11rem"
+                visible="{View>/GateValue/Visible}"
+            >
+                <m:Label text="{View>/GateValue/Label}" />
+                <t:template>
+                    <m:Input
+                        value="{Details>GateValue}"
+                        editable="{View>/GateValue/Editable}"
+                    />
+                </t:template>
+            </t:Column>
+            <t:Column
+                width="11rem"
+                visible="{View>/BalQty/Visible}"
+            >
+                <m:Label text="{View>/BalQty/Label}" />
+                <t:template>
+                    <m:Input
+                        value="{Details>BalQty}"
+                        editable="{View>/BalQty/Editable}"
+                    />
+                </t:template>
+            </t:Column>
+            <t:Column
+                width="11rem"
+                visible="{View>/UOM/Visible}"
+            >
+                <m:Label text="{View>/UOM/Label}" />
+                <t:template>
+                    <m:Input
+                        class="sapUiSmallMarginBottom"
+                        type="Text"
+                        editable="{= ${Details>DocumentNo} === ''}"
+                        showValueHelp="true"
+                        valueHelpRequest="handleQUValueHelp"
+                        value="{Details>UOM}"
+                        showSuggestion="true"
+                        showTableSuggestionValueHelp="true"
+                        suggestionRows="{/UnitOfMeasure}"
+                        suggestionItemSelected="onSuggestionItemSelectedQU"
+                    >
+                        <m:suggestionColumns>
+                            <m:Column
+                                popinDisplay="Inline"
+                                demandPopin="true"
+                            >
+                                <m:Label text="Unit Of Measure" />
+                            </m:Column>
+                            <m:Column
+                                popinDisplay="Inline"
+                                demandPopin="true"
+                                minScreenWidth="Tablet"
+                            >
+                                <m:Label text="Meas. Unit Text" />
+                            </m:Column>
+                            <m:Column
+                                popinDisplay="Inline"
+                                minScreenWidth="Tablet"
+                            >
+                                <m:Label text="DImension" />
+                            </m:Column>
+                        </m:suggestionColumns>
+
+                        <m:suggestionRows>
+                            <m:ColumnListItem>
+                                <m:Label text="{UnitOfMeasure}" />
+                                <m:Label text="{UnitOfMeasureLongName}" />
+                                <m:Label text="{UnitOfMeasureDimension}" />
+                            </m:ColumnListItem>
+                        </m:suggestionRows>
+                    </m:Input>
+                </t:template>
+            </t:Column>
+            <t:Column
+                width="11rem"
+                visible="{View>/GST/Visible}"
+            >
+                <m:Label text="{View>/GST/Label}" />
+                <t:template>
+                    <m:Input
+                        value="{Details>GST}"
+                        editable="{= ${Details>DocumentNo} === ''}"
+                    />
+                </t:template>
+            </t:Column>
+            <t:Column
+                width="11rem"
+                visible="{View>/Remarks/Visible}"
+            >
+                <m:Label text="{View>/Remarks/Label}" />
+                <t:template>
+                    <m:Input
+                        value="{Details>Remarks}"
+                        editable="{View>/Remarks/Editable}"
+                    />
+                </t:template>
+            </t:Column>
+        </t:columns>
+    </t:Table>
+</mvc:View>

@@ -1,0 +1,110 @@
+<core:FragmentDefinition
+    xmlns="sap.ui.comp.valuehelpdialog"
+    xmlns:m="sap.m"
+    xmlns:fb="sap.ui.comp.filterbar"
+    xmlns:core="sap.ui.core"
+    xmlns:f="sap.ui.layout.form"
+    xmlns:mvc="sap.ui.core.mvc"
+>
+    <ValueHelpDialog
+        id="_IDGenValueHelpDialog2"
+        title="Documents"
+        ok=".onDVHokPress"
+        cancel=".onDVHcancelPress"
+        afterClose=".onDVHAfterClosePress"
+        supportRanges="true"
+        key="DocumentNo"
+        descriptionKey="DocumentItemNo"
+    >
+        <filterBar>
+            <fb:FilterBar
+                id="_IDGenFilterBar2"
+                advancedMode="true"
+                search=".onDVHSearchPress"
+                isRunningInValueHelpDialog="true"
+            >
+                <fb:filterGroupItems>
+                    <fb:FilterGroupItem
+                        id="_IDGenFilterGroupItem4"
+                        groupName="__$INTERNAL$"
+                        name="DocumentNo"
+                        label="Document No"
+                        visibleInFilterBar="true"
+                    >
+                        <fb:control>
+                            <m:Input
+                                id="_IDGenInput4"
+                                name="DocumentNo"
+                                showSuggestion="true"
+                                showValueHelp="false"
+                                suggestionItems="{
+							   path: '/DocumentVH',
+							   sorter: { path: 'DocumentNo' }
+						    }"
+                            >
+                                <core:Item
+                                    id="_IDGenItem6"
+                                    key="{DocumentNo}"
+                                    text="{
+									path: 'DocumentNo',
+									formatter : '.vhformatter'
+								}"
+                                />
+                            </m:Input>
+                        </fb:control>
+                    </fb:FilterGroupItem>
+                    <fb:FilterGroupItem
+                        id="_IDGenFilterGroupItem5"
+                        groupName="__$INTERNAL$"
+                        name="DocumentItemNo"
+                        label="Document Item"
+                        visibleInFilterBar="true"
+                    >
+                        <fb:control>
+                            <m:Input
+                                id="_IDGenInput18"
+                                name="DocumentItemNo"
+                                showSuggestion="true"
+                                showValueHelp="false"
+                                suggestionItems="{
+								path: '/DocumentVH',
+								sorter: { path: 'DocumentItemNo' }
+							}"
+                            >
+                                <core:Item
+                                    id="_IDGenItem7"
+                                    key="{DocumentItemNo}"
+                                    text="{DocumentItemNo}"
+                                />
+                            </m:Input>
+                        </fb:control>
+                    </fb:FilterGroupItem>
+
+                      <fb:FilterGroupItem id="_IDGenFilterGroupItem6"
+                        groupName="__$INTERNAL$"
+                        name="DocumentItemText"
+                        label="Item Text"
+                        visibleInFilterBar="true"
+                    >
+                        <fb:control>
+                            <m:Input id="_IDGenInput10"
+                                name="DocumentItemText"
+                                showSuggestion="true"
+                                showValueHelp="false"
+                                suggestionItems="{
+								path: '/DocumentVH',
+								sorter: { path: 'DocumentItemText' }
+							}"
+                            >
+                                <core:Item id="_IDGenItem10"
+                                    key="{DocumentItemText}"
+                                    text="{DocumentItemText}"
+                                />
+                            </m:Input>
+                        </fb:control>
+                    </fb:FilterGroupItem>
+                </fb:filterGroupItems>
+            </fb:FilterBar>
+        </filterBar>
+    </ValueHelpDialog>
+</core:FragmentDefinition>

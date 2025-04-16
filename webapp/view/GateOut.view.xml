@@ -1,0 +1,133 @@
+<mvc:View
+    xmlns:rowmodes="sap.ui.table.rowmodes"
+    xmlns="sap.m"
+    xmlns:uxap="sap.uxap"
+    xmlns:core="sap.ui.core"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:smartForm="sap.ui.comp.smartform"
+    xmlns:smartTable="sap.ui.comp.smarttable"
+    xmlns:smartField="sap.ui.comp.smartfield"
+    xmlns:html="http://www.w3.org/1999/xhtml"
+    xmlns:app="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1"
+    controllerName="gateentry.controller.GateOut"
+    height="100%"
+>
+    <Page id="_IDGenPage">
+        <uxap:ObjectPageLayout id="_IDGenObjectPageLayout"
+            headerContentPinned="true"
+            upperCaseAnchorBar="false"
+        >
+            <uxap:sections>
+                <uxap:ObjectPageSection id="_IDGenObjectPageSection"
+                    titleUppercase="false"
+                    title="Gate Out"
+                    class="sapUiResponsiveMargin"
+                >
+                    <uxap:subSections>
+                        <uxap:ObjectPageSubSection id="_IDGenObjectPageSubSection1">
+                            <uxap:blocks>
+                                <smartForm:SmartForm
+                                    id="_IDGenSmartForm"
+                                    app:defaultCheckBoxDisplayBehaviour="OnOff"
+                                    app:defaultDropDownDisplayBehaviour="idAndDescription"
+                                    validationMode="Async"
+                                    editable="true"
+                                >
+                                    <smartForm:layout>
+                                        <smartForm:ColumnLayout
+                                            id="_IDGenColumnLayout1"
+                                            columnsM="2"
+                                            columnsL="3"
+                                            columnsXL="3"
+                                        />
+                                    </smartForm:layout>
+                                    <smartForm:Group id="_IDGenGroup3">
+                                        <smartForm:GroupElement
+                                            id="_IDGenGroupElement6"
+                                        >
+                                            <smartField:SmartField
+                                                id="_IDGenSmartField2"
+                                                textLabel="Gate Entry No"
+                                                value="{GateEntryNo}"
+                                            />
+                                        </smartForm:GroupElement>
+                                        <smartForm:GroupElement
+                                            id="_IDGenGroupElement9"
+                                        >
+                                            <smartField:SmartField
+                                                id="_IDGenSmartField10"
+                                                value="{GateOutDate}"
+                                                textLabel="Veh. Out Date/Time"
+                                            />
+                                            <smartField:SmartField
+                                                id="_IDGenSmartField11"
+                                                value="{GateOutTime}"
+                                            />
+                                        </smartForm:GroupElement>
+                                    </smartForm:Group>
+
+                                    <smartForm:Group id="_IDGenGroup4">
+                                        <smartForm:GroupElement
+                                            id="_IDGenGroupElement10"
+                                        >
+                                            <smartField:SmartField
+                                                id="_IDGenSmartField12"
+                                                value="{GrossWt}"
+                                                textLabel="Gross Wt"
+                                            />
+                                        </smartForm:GroupElement>
+                                        <smartForm:GroupElement
+                                            id="_IDGenGroupElement11"
+                                        >
+                                            <smartField:SmartField
+                                                id="_IDGenSmartField13"
+                                                value="{TareWt}"
+                                                textLabel="Tare Wt"
+                                            />
+                                        </smartForm:GroupElement>
+
+                                        <smartForm:GroupElement
+                                            id="_IDGenGroupElement12"
+                                        >
+                                            <smartField:SmartField
+                                                id="_IDGenSmartField21"
+                                                value="{NetWt}"
+                                                textLabel="Net Wt"
+                                            />
+                                        </smartForm:GroupElement>
+                                    </smartForm:Group>
+                                </smartForm:SmartForm>
+                            </uxap:blocks>
+                        </uxap:ObjectPageSubSection>
+                    </uxap:subSections>
+                </uxap:ObjectPageSection>
+            </uxap:sections>
+        </uxap:ObjectPageLayout>
+        <footer>
+            <OverflowToolbar id="_IDGenOverflowToolbar5">
+                <Button
+                    id="_IDGenButton3"
+                    visible="{=!!${message>/}.length}"
+                    icon="{ path: '/', formatter: '.buttonIconFormatter' }"
+                    type="{ path: '/', formatter: '.buttonTypeFormatter' }"
+                    text="{path: '/', formatter: '.highestSeverityMessages' }"
+                    press=".handleMessagePopoverPress"
+                    ariaHasPopup="Dialog"
+                />
+                <ToolbarSpacer id="_IDGenToolbarSpacer4" />
+                <Button
+                    id="_IDGenButton5"
+                    type="Default"
+                    text="Cancel"
+                    press="cancelDisable"
+                />
+                <Button
+                    id="_IDGenButton7"
+                    type="Emphasized"
+                    text="Save"
+                    press="onClickSave"
+                />
+            </OverflowToolbar>
+        </footer>
+    </Page>
+</mvc:View>

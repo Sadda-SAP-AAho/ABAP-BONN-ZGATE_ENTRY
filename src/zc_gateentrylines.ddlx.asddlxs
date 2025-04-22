@@ -126,6 +126,7 @@ annotate entity ZC_GateEntryLines
   { localElement: 'BalQty', element: 'BalQty',usage: #RESULT },
   { localElement: 'Rate', element: 'Rate',usage: #RESULT },
   { localElement: 'GST', element: 'GST',usage: #RESULT },
+  { localElement: 'Tolerance', element: 'ToleranceQty',usage: #RESULT },
   { localElement: 'SLoc', element: 'StorageLocation',usage: #RESULT }]
      }]
   DocumentNo;
@@ -256,6 +257,32 @@ annotate entity ZC_GateEntryLines
     label: 'GST'
   } ]
   GST;
+  
+  @UI.lineItem: [ {
+    position: 230 , 
+    importance: #HIGH, 
+    label: 'Balance Qty'
+  } ]
+  @UI.identification: [ {
+    position: 230 , 
+    label: 'Balance Qty'
+  } ]
+  @EndUserText.label: 'Balance Qty'
+  BalQty;
+  
+    
+  @UI.lineItem: [ {
+    position: 240 , 
+    importance: #HIGH, 
+    label: 'Tolerance'
+  } ]
+  @UI.identification: [ {
+    position: 240 , 
+    label: 'Tolerance'
+  } ]
+  @EndUserText.label: 'Tolerance'
+  Tolerance;
+
   
       
 }

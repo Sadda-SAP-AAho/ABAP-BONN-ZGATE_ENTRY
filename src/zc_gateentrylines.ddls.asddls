@@ -26,6 +26,7 @@ define view entity ZC_GateEntryLines
     GST,
     OrderQty,
     BalQty,
+    Tolerance,
     GateValue,
     Rate,
     DocumentNo,

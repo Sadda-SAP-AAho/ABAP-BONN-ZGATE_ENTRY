@@ -20,6 +20,7 @@ association to parent ZR_GateEntryHeader as _GateEntryHeader on $projection.Gate
     gst as GST,
     orderqty as OrderQty,
     balqty as BalQty,
+    tolerance as Tolerance,
     gatevalue as GateValue,
     rate as Rate,
     documentno as DocumentNo,

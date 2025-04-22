@@ -269,71 +269,75 @@ CLASS lhc_GateEntryHeader IMPLEMENTATION.
   METHOD validateMandatory.
     READ ENTITIES OF ZR_GateEntryHeader IN LOCAL MODE
       ENTITY GateEntryHeader
-        FIELDS ( Vehicleno Plant Entrytype InvoiceParty InvoiceNo InvoiceDate )
+        FIELDS ( Vehicleno Plant Entrytype InvoiceParty InvoiceNo InvoiceDate Cancelled GateOutTime GateInTime )
           WITH CORRESPONDING #( keys )
           RESULT DATA(entryheaders).
 
     LOOP AT entryheaders INTO DATA(entryHeader).
 
-    if entryHeader-InvoiceDate is not INITIAL.
-           DATA:  currentYear  TYPE string,
-                  currentMonth TYPE string,
-                  currentDate  TYPE string,
-                  fyStart      TYPE string,
-                  fyEnd        TYPE string,
-                  numYear      TYPE I.
+      IF ( entryHeader-EntryType = 'PUR' OR entryHeader-EntryType = 'WREF' ) AND entryHeader-GateInTime IS NOT INITIAL.
+        CONTINUE.
+      ELSEIF entryHeader-GateOutTime IS NOT INITIAL.
+        CONTINUE.
+      ELSEIF entryheader-Cancelled = 'X'.
+        CONTINUE.
+      ENDIF.
 
+      IF entryHeader-InvoiceDate IS NOT INITIAL.
+        DATA: currentYear  TYPE string,
+              currentMonth TYPE string,
+              currentDate  TYPE string,
+              fyStart      TYPE string,
+              fyEnd        TYPE string,
+              numYear      TYPE i.
 
-*            currentYear  = substring( val = entryHeader-InvoiceDate off = 0 len = 4 ).
-*            currentMonth = substring( val = entryHeader-InvoiceDate off = 4 len = 2 ).
-*            currentDate  = substring( val = entryHeader-InvoiceDate off = 6 len = 2 ).
-             currentYear  = entryHeader-InvoiceDate+0(4).
-             currentMonth = entryHeader-InvoiceDate+4(2).
-             currentDate  = entryHeader-InvoiceDate+6(2).
-            numYear = currentYear.
-            IF currentMonth >= '04'.  " April (04) to December (12)
-                fyStart = currentYear && '0401'.   " YYYY-04-01
-                numYear = numYear + 1.
-                fyEnd   = numYear && '0331'.  " (YYYY+1)-03-31
-            ELSE.  " January (01) to March (03)
-                numYear = numYear - 1.
-                fyStart = numYear && '0401'.  " (YYYY-1)-04-01
-                fyEnd   = currentYear && '0331'.  " YYYY-03-31
-            ENDIF.
+        currentYear  = entryHeader-InvoiceDate+0(4).
+        currentMonth = entryHeader-InvoiceDate+4(2).
+        currentDate  = entryHeader-InvoiceDate+6(2).
+        numYear = currentYear.
+        IF currentMonth >= '04'.  " April (04) to December (12)
+          fyStart = currentYear && '0401'.   " YYYY-04-01
+          numYear = numYear + 1.
+          fyEnd   = numYear && '0331'.  " (YYYY+1)-03-31
+        ELSE.  " January (01) to March (03)
+          numYear = numYear - 1.
+          fyStart = numYear && '0401'.  " (YYYY-1)-04-01
+          fyEnd   = currentYear && '0331'.  " YYYY-03-31
+        ENDIF.
 
 *            current companycode
-            select single from I_PurchaseOrderAPI01 as PUR
-            fields PUR~PurchasingOrganization
-            where PUR~PurchaseOrder = @entryHeader-RefDocNo
-            into @DATA(CompanyCode).
+        SELECT SINGLE FROM I_PurchaseOrderAPI01 AS pur
+        FIELDS pur~PurchasingOrganization
+        WHERE pur~PurchaseOrder = @entryHeader-RefDocNo
+        INTO @DATA(CompanyCode).
 
 
-            select single from I_PurchaseOrderAPI01 as PUR
-            join ZR_GateEntryLines as EntryLines on EntryLines~DocumentNo = PUR~PurchaseOrder
-            join ZR_GateEntryHeader as EntryHeader on EntryLines~GateEntryNo = EntryHeader~GateEntryNo
-            fields PUR~PurchasingOrganization
-            where EntryHeader~InvoiceNo = @entryHeader-InvoiceNo and PUR~PurchasingOrganization = @CompanyCode
-                 and EntryHeader~InvoiceDate BETWEEN @fyStart and @fyEnd and EntryHeader~InvoiceParty = @entryheader-InvoiceParty
-            into @DATA(CompanyCode2).
+        SELECT SINGLE FROM I_PurchaseOrderAPI01 AS pur
+        JOIN ZR_GateEntryLines AS EntryLines ON EntryLines~DocumentNo = pur~PurchaseOrder
+        JOIN ZR_GateEntryHeader AS EntryHeader ON EntryLines~GateEntryNo = EntryHeader~GateEntryNo
+        FIELDS pur~PurchasingOrganization
+        WHERE EntryHeader~InvoiceNo = @entryHeader-InvoiceNo AND pur~PurchasingOrganization = @CompanyCode
+             AND EntryHeader~InvoiceDate BETWEEN @fyStart AND @fyEnd AND EntryHeader~InvoiceParty = @entryheader-InvoiceParty
+        INTO @DATA(CompanyCode2).
 
-            if CompanyCode2 is not INITIAL.
-                 APPEND VALUE #( %tky = entryheader-%tky ) to failed-gateentryheader.
+        IF CompanyCode2 IS NOT INITIAL.
+          APPEND VALUE #( %tky = entryheader-%tky ) TO failed-gateentryheader.
 
-                 APPEND VALUE #( %tky = keys[ 1 ]-%tky
-                            %msg = new_message_with_text(
-                                     severity = if_abap_behv_message=>severity-error
-                                     text = 'Party Bill No already used within the Organisation in a Year'
-                            ) ) TO reported-gateentryheader.
-            ENDIF.
+          APPEND VALUE #( %tky = keys[ 1 ]-%tky
+                     %msg = new_message_with_text(
+                              severity = if_abap_behv_message=>severity-error
+                              text = 'Party Bill No already used within the Organisation in a Year'
+                     ) ) TO reported-gateentryheader.
         ENDIF.
+      ENDIF.
 
 *
 *        select from ZR_GateEntryHeader
 *        fields GateEntryNo
 *        where InvoiceNo = @entryHeader-InvoiceNo
 
-      if entryheader-Vehicleno = ''.
-        APPEND VALUE #( %tky = entryheader-%tky ) to failed-gateentryheader.
+      IF entryheader-Vehicleno = ''.
+        APPEND VALUE #( %tky = entryheader-%tky ) TO failed-gateentryheader.
 
         APPEND VALUE #( %tky = keys[ 1 ]-%tky
                         %msg = new_message_with_text(
@@ -341,8 +345,8 @@ CLASS lhc_GateEntryHeader IMPLEMENTATION.
                                  text = 'Vehicle No. is mandatory'
                         ) ) TO reported-gateentryheader.
 
-      elseif entryheader-InvoiceParty = '' and entryheader-EntryType = 'PUR' .
-        APPEND VALUE #( %tky = entryheader-%tky ) to failed-gateentryheader.
+      ELSEIF entryheader-InvoiceParty = '' AND entryheader-EntryType = 'PUR' .
+        APPEND VALUE #( %tky = entryheader-%tky ) TO failed-gateentryheader.
 
         APPEND VALUE #( %tky = keys[ 1 ]-%tky
                         %msg = new_message_with_text(
@@ -350,7 +354,7 @@ CLASS lhc_GateEntryHeader IMPLEMENTATION.
                                  text = 'Invoicing Party is mandatory'
                         ) ) TO reported-gateentryheader.
 
-      endif.
+      ENDIF.
 
 *      if entryheader-Plant = ''.
 *        APPEND VALUE #( %tky = entryheader-%tky ) to failed-gateentryheader.

@@ -39,9 +39,12 @@ select from I_PurchaseOrderAPI01 as PUR
         cast(PurchaseOrderItem.NetPriceAmount  as abap.curr(13,2))                 as                  Rate,
         PurchaseOrderItem.PurchaseOrderQuantityUnit     as                  DocumentItemQtyUnit,
         @Semantics.quantity.unitOfMeasure: 'DocumentItemQtyUnit'     
-        case when _GRN.GRNQty is null then PurchaseOrderItem.OrderQuantity
-        else (PurchaseOrderItem.OrderQuantity - _GRN.GRNQty) end as         BalQty,
-        PurchaseOrderItem.OverdelivTolrtdLmtRatioInPct  as              Tolerance
+        cast(case when _GRN.GRNQty is null then PurchaseOrderItem.OrderQuantity
+        else (PurchaseOrderItem.OrderQuantity - _GRN.GRNQty)  end as abap.dec(15,2))  as         BalQty,
+//        Tolerance Qty
+        cast(
+            PurchaseOrderItem.OrderQuantity * PurchaseOrderItem.OverdelivTolrtdLmtRatioInPct / 100
+            as abap.dec(15,2))                          as                  ToleranceQty
     }
     where PurchaseOrderItem.PurchasingDocumentDeletionCode = '' and PurchaseOrderItem.IsCompletelyDelivered = ''
           and PUR.ReleaseIsNotCompleted = '' and PUR.PurchaseOrderType != 'ZSRV' and PUR.PurchaseOrderType != 'ZRET' 
@@ -79,7 +82,7 @@ select from I_PurchaseOrderAPI01 as PUR
              end
            ) as abap.dec(13,3)
         )                                               as                  BalQty,
-       0                                                as                  Tolerance              
+       0                                                as                  ToleranceQty              
     }
      where EntryHeader.GateOutward = 0 and EntryHeader.EntryType = 'RGP-OUT'
      union
@@ -109,9 +112,11 @@ select from I_PurchaseOrderAPI01 as PUR
         PurchaseOrderItem.DocumentCurrency              as                  DocumentCurrency,
         PurchaseOrderItem.NetPriceAmount                as                  Rate,
         PurchaseOrderItem.PurchaseOrderQuantityUnit     as                  DocumentItemQtyUnit,      
-        (case when _GRN.GRNQty is null then PurchaseOrderItem.OrderQuantity
-        else (PurchaseOrderItem.OrderQuantity - _GRN.GRNQty) end) as         BalQty,
-        PurchaseOrderItem.OverdelivTolrtdLmtRatioInPct  as              Tolerance
+        cast(case when _GRN.GRNQty is null then PurchaseOrderItem.OrderQuantity
+        else (PurchaseOrderItem.OrderQuantity - _GRN.GRNQty) end as abap.dec(15,2))  as       BalQty,
+        cast(
+            PurchaseOrderItem.OrderQuantity * PurchaseOrderItem.OverdelivTolrtdLmtRatioInPct / 100
+            as abap.dec(15,2))                          as                  ToleranceQty
     }
     where PurchaseOrderItem.PurchasingDocumentDeletionCode = '' and PurchaseOrderItem.IsCompletelyDelivered = ''
           and PUR.ReleaseIsNotCompleted = ''  and PUR.PurchaseOrderType = 'ZSRV'

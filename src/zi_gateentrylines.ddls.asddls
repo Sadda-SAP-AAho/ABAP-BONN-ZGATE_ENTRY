@@ -19,6 +19,7 @@ define view entity ZI_GateEntryLines
     GST,
     OrderQty,
     BalQty,
+    Tolerance,
     GateValue,
     Rate,
     DocumentNo,

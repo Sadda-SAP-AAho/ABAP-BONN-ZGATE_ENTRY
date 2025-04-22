@@ -10,6 +10,9 @@ CLASS lhc_gateentrylines DEFINITION INHERITING FROM cl_abap_behavior_handler.
      METHODS precheck_create_lines FOR PRECHECK
       IMPORTING entities FOR UPDATE GateEntryLines.
 
+      METHODS validateMandatory FOR VALIDATE ON SAVE
+      IMPORTING keys FOR GateEntryLines~validateMandatory.
+
 ENDCLASS.
 CLASS lhc_gateentrylines IMPLEMENTATION.
 
@@ -35,7 +38,7 @@ CLASS lhc_gateentrylines IMPLEMENTATION.
   METHOD precheck_create_lines.
     loop at entities assigning FIELD-SYMBOL(<lfs_entity>).
         SELECT SINGLE FROM ZR_GateEntryHeader
-        FIELDS EntryType, Plant
+        FIELDS EntryType, Plant, InvoiceParty
         WHERE GateEntryNo = @<lfs_entity>-GateEntryNo
         INTO @DATA(HeaderType).
 
@@ -61,7 +64,7 @@ CLASS lhc_gateentrylines IMPLEMENTATION.
                                   severity = if_abap_behv_message=>severity-error
                                   text = 'Document No. is Blank.' )
                                   ) to reported-gateentrylines.
-            ELSEIF ( <lfs_entity>-GateQty > <lfs_entity>-BalQty OR <lfs_entity>-InQty > <lfs_entity>-BalQty ) AND <lfs_entity>-DocumentNo NE ''.
+            ELSEIF ( <lfs_entity>-GateQty > ( <lfs_entity>-BalQty + <lfs_entity>-Tolerance ) OR <lfs_entity>-InQty > <lfs_entity>-BalQty ) AND <lfs_entity>-DocumentNo NE ''.
                  APPEND VALUE #( %tky = <lfs_entity>-%tky ) to failed-gateentrylines.
 
                 APPEND VALUE #(  %msg = new_message_with_text(
@@ -84,8 +87,75 @@ CLASS lhc_gateentrylines IMPLEMENTATION.
                 ENDIF.
 
             ENDIF.
+
+            DATA(lv_lineParty) = |{ <lfs_entity>-PartyCode ALPHA = IN }|.
+            CONCATENATE '00' HeaderType-InvoiceParty INTO DATA(lv_headParty).
+
+
+            SELECT SINGLE FROM I_Supplier
+            FIELDS BusinessPartnerPanNumber
+            WHERE Supplier = @lv_lineParty
+            INTO @DATA(Line_PAN).
+
+            SELECT SINGLE FROM I_Supplier
+            FIELDS BusinessPartnerPanNumber
+            WHERE Supplier = @lv_headParty
+            INTO @DATA(Header_PAN).
+
+            IF Line_PAN NE Header_PAN.
+                APPEND VALUE #( %tky = <lfs_entity>-%tky ) to failed-gateentrylines.
+
+                APPEND VALUE #(  %msg = new_message_with_text(
+                                  severity = if_abap_behv_message=>severity-error
+                                  text = 'Party PAN Number is Different.' )
+                                  ) to reported-gateentrylines.
+            ENDIF.
+
+
+
+
      ENDLOOP.
   ENDMETHOD.
+
+
+   METHOD validateMandatory.
+     READ ENTITIES OF ZR_GateEntryHeader IN LOCAL MODE
+       ENTITY GateEntryLines
+         ALL FIELDS
+           WITH CORRESPONDING #( keys )
+           RESULT DATA(entryheaders).
+
+     LOOP AT entryheaders INTO DATA(entryHeader).
+
+       SELECT SINGLE FROM ZR_GateEntryHeader
+           FIELDS EntryType
+           WHERE GateEntryNo = @entryHeader-GateEntryNo
+           INTO @DATA(header).
+
+       IF entryHeader-ProductCode NE '' OR entryHeader-ProductDesc NE ''.
+
+         IF ( header = 'RGP-IN' OR header = 'WREF' ) AND entryHeader-InQty LE 0 .
+           APPEND VALUE #( %tky = entryHeader-%tky ) TO failed-gateentrylines.
+
+           APPEND VALUE #( %msg = new_message_with_text(
+                             severity = if_abap_behv_message=>severity-error
+                             text = 'In Qty is Mandatory.' )
+                             ) TO reported-gateentrylines.
+         ELSEIF entryHeader-GateQty LE 0.
+           APPEND VALUE #( %tky = entryHeader-%tky ) TO failed-gateentrylines.
+
+           APPEND VALUE #( %msg = new_message_with_text(
+                               severity = if_abap_behv_message=>severity-error
+                               text = 'Gate Qty is Mandatory.' )
+                               ) TO reported-gateentrylines.
+         ENDIF.
+
+       ENDIF.
+
+
+     ENDLOOP.
+
+   ENDMETHOD.
 
 
   METHOD calculateTotals.
@@ -106,6 +176,8 @@ CLASS lhc_gateentrylines IMPLEMENTATION.
             into @DATA(header).
 
      loop at lt_gateentry INTO DATA(exportline).
+
+
 
         if header = 'RGP-IN' or header = 'WREF'.
           MODIFY ENTITIES OF ZR_GateEntryHeader IN LOCAL MODE

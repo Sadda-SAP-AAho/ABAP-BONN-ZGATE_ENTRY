@@ -1,4 +1,4 @@
-<mvc:View
+<mvc:View xmlns:navpopover="sap.ui.comp.navpopover"
     xmlns:rowmodes="sap.ui.table.rowmodes"
     xmlns="sap.m"
     xmlns:uxap="sap.uxap"
@@ -13,18 +13,22 @@
     height="100%"
 >
     <Page id="_IDGenPage">
-        <uxap:ObjectPageLayout id="_IDGenObjectPageLayout"
+        <uxap:ObjectPageLayout
+            id="_IDGenObjectPageLayout"
             headerContentPinned="true"
             upperCaseAnchorBar="false"
         >
             <uxap:sections>
-                <uxap:ObjectPageSection id="_IDGenObjectPageSection"
+                <uxap:ObjectPageSection
+                    id="_IDGenObjectPageSection"
                     titleUppercase="false"
                     title="Gate Out"
                     class="sapUiResponsiveMargin"
                 >
                     <uxap:subSections>
-                        <uxap:ObjectPageSubSection id="_IDGenObjectPageSubSection1">
+                        <uxap:ObjectPageSubSection
+                            id="_IDGenObjectPageSubSection1"
+                        >
                             <uxap:blocks>
                                 <smartForm:SmartForm
                                     id="_IDGenSmartForm"
@@ -32,6 +36,7 @@
                                     app:defaultDropDownDisplayBehaviour="idAndDescription"
                                     validationMode="Async"
                                     editable="true"
+                                    
                                 >
                                     <smartForm:layout>
                                         <smartForm:ColumnLayout
@@ -62,6 +67,7 @@
                                             <smartField:SmartField
                                                 id="_IDGenSmartField11"
                                                 value="{GateOutTime}"
+                                                
                                             />
                                         </smartForm:GroupElement>
                                     </smartForm:Group>

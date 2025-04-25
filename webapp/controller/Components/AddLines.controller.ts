@@ -82,6 +82,9 @@ export default class AddLines extends Controller {
         this.line.setProperty("/OrderDetailsTable", this.line.getProperty("/OrderDetailsTable").filter((data: any, index: number) => !selectedIndex.includes(index)));
         if (this.line.getProperty("/OrderDetailsTable") && this.line.getProperty("/OrderDetailsTable").length <= 0) {
             (this.getView() as any).getParent().getParent().getParent().byId("createHeaderForm").byId("EntryType").setEditable(true);
+            (this.getView() as any).getParent().getParent().getParent().byId("createHeaderForm").byId("InvoiceParty").setValue("")
+            (this.getView() as any).getParent().getParent().getParent().byId("createHeaderForm").byId("InvoicePartyName").setValue("");
+            (this.getView() as any).getParent().getParent().getParent().byId("createHeaderForm").byId("_IDGenInput6").setValue("");
         }
     }
 
@@ -117,10 +120,10 @@ export default class AddLines extends Controller {
 
         let tol = 0
         if(currentLines[index].Tolerance){
-            tol = parseFloat(currentLines[index].BalQty) * parseFloat(currentLines[index].Tolerance) / 100;
+            tol = parseFloat(currentLines[index].BalQty) + parseFloat(currentLines[index].Tolerance) 
         }
 
-        if ((parseFloat(currentLines[index].GateQty) !== 0 && parseFloat(currentLines[index].GateQty) > (parseFloat(currentLines[index].BalQty) +  tol) && currentLines[index].DocumentNo) ) {
+        if ((parseFloat(currentLines[index].GateQty) !== 0 && parseFloat(currentLines[index].GateQty) > tol && currentLines[index].DocumentNo) ) {
             MessageBox.error("Gate Qty Greater than Balance Qty.");
             currentLines[index].GateQty = 0;
             this.line.setProperty("/OrderDetailsTable", currentLines);

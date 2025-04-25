@@ -173,7 +173,7 @@ export default class CreateHeader extends Controller {
                         GST: object.GST,
                         Rate: Number(object.Rate).toFixed(2),
                         OrderQty: Number(object.DocumentItemQty).toFixed(3),
-                        Tolerance: Number(object.Tolerance).toFixed(3)
+                        Tolerance: Number(object.ToleranceQty).toFixed(3)
                     })
 
                     that.matchingPAN = object.InvoicingPartyPAN;
@@ -709,7 +709,7 @@ export default class CreateHeader extends Controller {
                         GST: object.GST,
                         OrderQty: Number(object.DocumentItemQty).toFixed(3),
                         BalQty: Number(object.BalQty).toFixed(3),
-                        Tolerance: Number(object.Tolerance).toFixed(3)
+                        Tolerance: Number(object.ToleranceQty).toFixed(3)
                     })
                     that.matchingPAN = object.InvoicingPartyPAN;
                 }

@@ -11,6 +11,7 @@ import ElementRegistry from "sap/ui/core/ElementRegistry";
 import MessagePopover from "sap/m/MessagePopover";
 import ManagedObject from "sap/ui/base/ManagedObject";
 import DateFormat from "sap/ui/core/format/DateFormat";
+import SmartField from "sap/ui/comp/smartfield/SmartField";
 
 export default class Details extends Controller {
 
@@ -29,7 +30,7 @@ export default class Details extends Controller {
         BusyIndicator.show();
         let avcLic = window.decodeURIComponent((<any>oEvent.getParameter("arguments")).GateEntry);
 
-  
+
 
         this.oDataModel = new ODataModel("/sap/opu/odata/sap/ZUI_GATEENTRY/", {
             defaultCountMode: "None",
@@ -43,15 +44,28 @@ export default class Details extends Controller {
             that.byId("_IDGenSmartForm")!.bindElement(`/GateEntryHeader('${avcLic}')`);
         });
 
+        this.oDataModel.attachRequestCompleted(function (data: any) {
+            let reqDetails = data.getParameters();
+            if (reqDetails.url === `GateEntryHeader('${avcLic}')` && reqDetails.method === 'GET') {
+
+                (that.byId("_IDGenSmartField10") as SmartField).setValue(new Date());
+
+                var now: any = new Date();
+
+                // Create a date object for today at 12:00 AM
+                var midnight: any = new Date(now);
+                midnight.setHours(0, 0, 0, 0);
+
+                // Get the difference in milliseconds from midnight
+                var msSinceMidnight = now - midnight;
+
+                (that.byId("_IDGenSmartField11") as SmartField).setValue({ms:msSinceMidnight,__edmType: 'Edm.Time'});
+            }
+        })
+
+
         this._MessageManager.removeAllMessages();
 
-        var oNow = new Date();
-
-        // Format date as "yyyy-MM-ddTHH:mm:ss" (for DatePicker)
-        var oDateFormatter = DateFormat.getDateInstance({ pattern: "yyyy-MM-ddTHH:mm:ss" });
-        var sFormattedDate = oDateFormatter.format(oNow);
-
-        (this.byId("_IDGenSmartField10") as any).setValue(sFormattedDate);
 
         this._MessageManager.registerObject(this.byId("_IDGenSmartForm") as ManagedObject, true);
         this.getView()!.setModel(this._MessageManager.getMessageModel(), "message");
@@ -66,7 +80,7 @@ export default class Details extends Controller {
     }
 
 
-  
+
 
     public async onClickSave() {
         BusyIndicator.show();
@@ -81,6 +95,9 @@ export default class Details extends Controller {
 
                 this.oDataModel.update("/" + key, value, {
                     groupId: "updateDetails",
+                    headers:{
+                        "if-Match":"*"
+                    },
                     success: function (response: any) {
                         const router = (that.getOwnerComponent() as any).getRouter();
                         router.navTo("GateEntryMaintain")

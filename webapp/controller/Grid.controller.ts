@@ -5,16 +5,10 @@ import Filter from "sap/ui/model/Filter";
 import FilterOperator from "sap/ui/model/FilterOperator";
 import Button from "sap/m/Button";
 import Select from "sap/m/Select";
-
-// import JSONModel from "sap/ui/model/json/JSONModel";
-// import ODataModel from "sap/ui/model/odata/v2/ODataModel";
-import Control from "sap/ui/core/Control";
 import BusyIndicator from "sap/ui/core/BusyIndicator";
-// import Button from "sap/m/Button";
-// import Filter from "sap/ui/model/Filter";
-// import FilterOperator from "sap/ui/model/FilterOperator";
 import PDFViewer from "sap/m/PDFViewer";
 import MessageToast from "sap/m/MessageToast";
+import SmartTable from "sap/ui/comp/smarttable/SmartTable";
 
 /**
  * @namespace gateentry.controller
@@ -38,6 +32,8 @@ export default class Grid extends Controller {
         this.byId("_IDGenSelectOption")?.setModel(oModel2);
 
         this.EntryTypeSelect();
+
+        (this.byId("_IDGenSmartTable") as SmartTable).rebindTable(true)
     }
 
     public EntryTypeSelect(): void {

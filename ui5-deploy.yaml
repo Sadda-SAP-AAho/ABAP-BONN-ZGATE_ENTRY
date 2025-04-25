@@ -20,7 +20,7 @@ builder:
         app:
           name: ZGATEENTRY
           package: ZGATE_ENTRY
-          transport: NXSK900973
+          transport: NXSK901288
         exclude:
           - /test/
   resources:

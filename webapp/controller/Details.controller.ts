@@ -201,10 +201,18 @@ export default class Details extends Controller {
             this.oDataModel.setDeferredGroups(["updateDetails"])
             for (let index = 0; index < updates.length; index++) {
                 const key = updates[index];
-                const value = changes[key];
+                if (this.blankAddedLines.includes("/" + key)) this.blankAddedLines = this.blankAddedLines.filter(data => data != "/" + key);
+                let val = this.oDataModel.getObject("/"+key);
 
-                if (this.blankAddedLines.includes("/" + key)) this.blankAddedLines = this.blankAddedLines.filter(data => data != "/" + key)
-                this.oDataModel.update("/" + key, value, {
+                delete val.__metadata;
+                delete val.Delete_mc;
+                delete val.GateEntryNo;
+                delete val.GateItemNo;
+
+                this.oDataModel.update("/" + key, {
+                    ...val,
+                    ...changes[key]
+                }, {
                     groupId: "updateDetails"
                 })
             }

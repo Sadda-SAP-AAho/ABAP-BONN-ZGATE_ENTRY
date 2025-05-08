@@ -352,12 +352,17 @@
                                                 minRowCount="5"
                                             />
                                         </table:rowMode>
+                                        <!-- <table:columns>
+                                            <table:Column>
+                                                <Label text="Document No" />
+                                                <table:template>
+                                                    <Input
+                                                        value="{DocumentNo}"
+                                                    />
+                                                </table:template>
+                                            </table:Column>
+                                        </table:columns> -->
                                     </table:Table>
-                                    <!-- sticky="ColumnHeaders,HeaderToolbar"
-                                        inset="false"
-                                        selectionChange="onSelectionChange"
-                                        mode="MultiSelect"
-                                        growing="true" -->
                                     <smartTable:customToolbar>
                                         <OverflowToolbar
                                             id="_IDGenOverflowToolbar1"

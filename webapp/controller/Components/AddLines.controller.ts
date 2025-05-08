@@ -81,10 +81,11 @@ export default class AddLines extends Controller {
         let selectedIndex = (this.byId("_IDGenTable1") as any).getSelectedIndices();
         this.line.setProperty("/OrderDetailsTable", this.line.getProperty("/OrderDetailsTable").filter((data: any, index: number) => !selectedIndex.includes(index)));
         if (this.line.getProperty("/OrderDetailsTable") && this.line.getProperty("/OrderDetailsTable").length <= 0) {
-            (this.getView() as any).getParent().getParent().getParent().byId("createHeaderForm").byId("EntryType").setEditable(true);
-            (this.getView() as any).getParent().getParent().getParent().byId("createHeaderForm").byId("InvoiceParty").setValue("")
-            (this.getView() as any).getParent().getParent().getParent().byId("createHeaderForm").byId("InvoicePartyName").setValue("");
-            (this.getView() as any).getParent().getParent().getParent().byId("createHeaderForm").byId("_IDGenInput6").setValue("");
+            let form = (this.getView() as any).getParent().getParent().getParent().byId("createHeaderForm");
+            form.byId("EntryType").setEditable(true);
+            form.byId("InvoiceParty").setValue("")
+            form.byId("InvoicePartyName").setValue("");
+            form.byId("_IDGenInput6").setValue("");
         }
     }
 

@@ -96,8 +96,7 @@ export default class Details extends Controller {
 
 
     public editEnable() {
-
-        
+        this._MessageManager.removeAllMessages();
         (this.byId("Update") as Button).setVisible(false);
         (this.byId("_IDGenPage4") as Page).setShowFooter(true);
         (this.byId("_IDGenButton1") as Button).setVisible(true);
@@ -111,6 +110,7 @@ export default class Details extends Controller {
 
 
     public cancelDisable() {
+        this._MessageManager.removeAllMessages();
         (this.byId("Update") as Button).setVisible(true);
         (this.byId("_IDGenPage4") as Page).setShowFooter(false);
         (this.byId("_IDGenButton1") as Button).setVisible(false);
@@ -179,10 +179,15 @@ export default class Details extends Controller {
 
 
     public async onClickSave() {
-        BusyIndicator.show();
         let that = this;
         let changes = (this.getView()!.getModel() as any).mChangedEntities;
         let updates = Object.keys(changes);
+        
+        if(updates.length<=0){
+            this.cancelDisable();
+            return;
+        }
+        BusyIndicator.show();
 
         let oButton = this.byId("_IDGenButton") as Button;
         this._MessageManager.removeAllMessages();
@@ -197,8 +202,8 @@ export default class Details extends Controller {
             that.oMP.openBy(oButton);
         }.bind(this), 100);
 
+        this.oDataModel.setDeferredGroups(["updateDetails"])
         if (updates.length > 0) {
-            this.oDataModel.setDeferredGroups(["updateDetails"])
             for (let index = 0; index < updates.length; index++) {
                 const key = updates[index];
                 if (this.blankAddedLines.includes("/" + key)) this.blankAddedLines = this.blankAddedLines.filter(data => data != "/" + key);
@@ -228,8 +233,8 @@ export default class Details extends Controller {
         }
 
         let response = await this.rungroups(this.oDataModel, "updateDetails");
-        let allSuccess = true
-        for (let index = 0; index < response.data.__batchResponses.length; index++) {
+        let allSuccess = true;
+        for (let index = 0; index < response?.data.__batchResponses.length; index++) {
             const element = response.data.__batchResponses[index];
             if(!element.response) continue;
             if(element.response.statusCode === '400'){

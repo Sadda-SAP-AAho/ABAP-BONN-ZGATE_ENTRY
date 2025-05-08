@@ -7,7 +7,7 @@ CLASS lhc_gateentrylines DEFINITION INHERITING FROM cl_abap_behavior_handler.
     METHODS calculateTotals FOR DETERMINE ON MODIFY
       IMPORTING keys FOR GateEntryLines~calculateTotals.
 
-     METHODS precheck_create_lines FOR PRECHECK
+     METHODS precheck_update_lines FOR PRECHECK
       IMPORTING entities FOR UPDATE GateEntryLines.
 
       METHODS validateMandatory FOR VALIDATE ON SAVE
@@ -35,86 +35,142 @@ CLASS lhc_gateentrylines IMPLEMENTATION.
 
   ENDMETHOD.
 
-  METHOD precheck_create_lines.
-    loop at entities assigning FIELD-SYMBOL(<lfs_entity>).
-        SELECT SINGLE FROM ZR_GateEntryHeader
-        FIELDS EntryType, Plant, InvoiceParty
-        WHERE GateEntryNo = @<lfs_entity>-GateEntryNo
-        INTO @DATA(HeaderType).
+  METHOD precheck_update_lines.
+    LOOP AT entities ASSIGNING FIELD-SYMBOL(<lfs_entity>).
+      SELECT SINGLE FROM ZR_GateEntryHeader
+      FIELDS EntryType, Plant, InvoiceParty
+      WHERE GateEntryNo = @<lfs_entity>-GateEntryNo
+      INTO @DATA(HeaderType).
 
-            IF <lfs_entity>-Plant = ''.
-                APPEND VALUE #( %tky = <lfs_entity>-%tky ) to failed-gateentrylines.
+      IF <lfs_entity>-Plant = ''.
+        APPEND VALUE #( %tky = <lfs_entity>-%tky ) TO failed-gateentrylines.
 
-                APPEND VALUE #( %msg = new_message_with_text(
-                                  severity = if_abap_behv_message=>severity-error
-                                  text = 'Plant is Mandatory.' )
-                                  ) to reported-gateentrylines.
-            ELSEIF <lfs_entity>-Plant NE HeaderType-Plant.
-                APPEND VALUE #( %tky = <lfs_entity>-%tky ) to failed-gateentrylines.
+        APPEND VALUE #( %msg = new_message_with_text(
+                          severity = if_abap_behv_message=>severity-error
+                          text = 'Plant is Mandatory.' )
+                          ) TO reported-gateentrylines.
+      ELSEIF <lfs_entity>-Plant NE HeaderType-Plant.
+        APPEND VALUE #( %tky = <lfs_entity>-%tky ) TO failed-gateentrylines.
 
-                APPEND VALUE #( %msg = new_message_with_text(
-                                  severity = if_abap_behv_message=>severity-error
-                                  text = 'Plant is Different.' )
-                                  ) to reported-gateentrylines.
+        APPEND VALUE #( %msg = new_message_with_text(
+                          severity = if_abap_behv_message=>severity-error
+                          text = 'Plant is Different.' )
+                          ) TO reported-gateentrylines.
 
-            ELSEIF <lfs_entity>-DocumentNo = '' and HeaderType-EntryType = 'PUR'.
-                 APPEND VALUE #( %tky = <lfs_entity>-%tky ) to failed-gateentrylines.
+      ELSEIF <lfs_entity>-DocumentNo = '' AND HeaderType-EntryType = 'PUR'.
+        APPEND VALUE #( %tky = <lfs_entity>-%tky ) TO failed-gateentrylines.
 
-                APPEND VALUE #(  %msg = new_message_with_text(
-                                  severity = if_abap_behv_message=>severity-error
-                                  text = 'Document No. is Blank.' )
-                                  ) to reported-gateentrylines.
-            ELSEIF ( <lfs_entity>-GateQty > ( <lfs_entity>-BalQty + <lfs_entity>-Tolerance ) OR <lfs_entity>-InQty > <lfs_entity>-BalQty ) AND <lfs_entity>-DocumentNo NE ''.
-                 APPEND VALUE #( %tky = <lfs_entity>-%tky ) to failed-gateentrylines.
+        APPEND VALUE #(  %msg = new_message_with_text(
+                          severity = if_abap_behv_message=>severity-error
+                          text = 'Document No. is Blank.' )
+                          ) TO reported-gateentrylines.
+      ELSEIF ( <lfs_entity>-GateQty > ( <lfs_entity>-BalQty + <lfs_entity>-Tolerance ) OR <lfs_entity>-InQty > <lfs_entity>-BalQty ) AND <lfs_entity>-DocumentNo NE ''.
+        APPEND VALUE #( %tky = <lfs_entity>-%tky ) TO failed-gateentrylines.
 
-                APPEND VALUE #(  %msg = new_message_with_text(
-                                  severity = if_abap_behv_message=>severity-error
-                                  text = 'Gate Qty Cannot greater than Balance Qty.' )
-                                  ) to reported-gateentrylines.
-            ELSEIF <lfs_entity>-DocumentNo NE ''.
-                SELECT SINGLE FROM ZI_DocumentVH
-                FIELDS EntryType
-                WHERE DocumentNo = @<lfs_entity>-DocumentNo AND DocumentItemNo = @<lfs_entity>-DocumentItemNo
-                INTO @DATA(LineType).
+        APPEND VALUE #(  %msg = new_message_with_text(
+                          severity = if_abap_behv_message=>severity-error
+                          text = 'Gate Qty Cannot greater than Balance Qty.' )
+                          ) TO reported-gateentrylines.
+      ELSEIF <lfs_entity>-DocumentNo NE ''.
+        SELECT SINGLE FROM ZI_DocumentVH
+        FIELDS EntryType
+        WHERE DocumentNo = @<lfs_entity>-DocumentNo AND DocumentItemNo = @<lfs_entity>-DocumentItemNo
+        INTO @DATA(LineType).
 
-                IF LineType NE HeaderType-EntryType.
-                    APPEND VALUE #( %tky = <lfs_entity>-%tky ) to failed-gateentrylines.
+        IF LineType NE HeaderType-EntryType.
+          APPEND VALUE #( %tky = <lfs_entity>-%tky ) TO failed-gateentrylines.
 
-                    APPEND VALUE #(  %msg = new_message_with_text(
-                                      severity = if_abap_behv_message=>severity-error
-                                      text = 'Entry Type DIfferent for Document.' )
-                                      ) to reported-gateentrylines.
-                ENDIF.
+          APPEND VALUE #(  %msg = new_message_with_text(
+                            severity = if_abap_behv_message=>severity-error
+                            text = 'Entry Type DIfferent for Document.' )
+                            ) TO reported-gateentrylines.
+        ENDIF.
 
-            ENDIF.
+      ENDIF.
 
-            DATA(lv_lineParty) = |{ <lfs_entity>-PartyCode ALPHA = IN }|.
-            CONCATENATE '00' HeaderType-InvoiceParty INTO DATA(lv_headParty).
-
-
-            SELECT SINGLE FROM I_Supplier
-            FIELDS BusinessPartnerPanNumber
-            WHERE Supplier = @lv_lineParty
-            INTO @DATA(Line_PAN).
-
-            SELECT SINGLE FROM I_Supplier
-            FIELDS BusinessPartnerPanNumber
-            WHERE Supplier = @lv_headParty
-            INTO @DATA(Header_PAN).
-
-            IF Line_PAN NE Header_PAN.
-                APPEND VALUE #( %tky = <lfs_entity>-%tky ) to failed-gateentrylines.
-
-                APPEND VALUE #(  %msg = new_message_with_text(
-                                  severity = if_abap_behv_message=>severity-error
-                                  text = 'Party PAN Number is Different.' )
-                                  ) to reported-gateentrylines.
-            ENDIF.
+      DATA(lv_lineParty) = |{ <lfs_entity>-PartyCode ALPHA = IN }|.
+      CONCATENATE '00' HeaderType-InvoiceParty INTO DATA(lv_headParty).
 
 
+      SELECT SINGLE FROM I_Supplier
+      FIELDS BusinessPartnerPanNumber
+      WHERE Supplier = @lv_lineParty
+      INTO @DATA(Line_PAN).
+
+      SELECT SINGLE FROM I_Supplier
+      FIELDS BusinessPartnerPanNumber
+      WHERE Supplier = @lv_headParty
+      INTO @DATA(Header_PAN).
+
+      IF Line_PAN NE Header_PAN.
+        APPEND VALUE #( %tky = <lfs_entity>-%tky ) TO failed-gateentrylines.
+
+        APPEND VALUE #(  %msg = new_message_with_text(
+                          severity = if_abap_behv_message=>severity-error
+                          text = 'Party PAN Number is Different.' )
+                          ) TO reported-gateentrylines.
+      ENDIF.
 
 
-     ENDLOOP.
+      SELECT SINGLE FROM ZR_GateEntryLines
+      FIELDS DocumentNo, DocumentItemNo, PartyCode, PartyName, ProductCode, ProductDesc, Plant, GateValue, uom
+      WHERE GateEntryNo = @<lfs_entity>-GateEntryNo AND
+            GateItemNo = @<lfs_entity>-GateItemNo
+      INTO @DATA(Line).
+
+      IF HeaderType-EntryType = 'PUR'.
+
+*             check that any fields in Line is changes or not when they are initially not blank line Line-DocumnetNo is blank and Line-DocumentNo is  not equals to <lfs_entity>-DocumentNo
+        IF Line-DocumentNo NE '' AND Line-DocumentNo NE <lfs_entity>-DocumentNo.
+          APPEND VALUE #( %tky = <lfs_entity>-%tky ) TO failed-gateentrylines.
+
+          APPEND VALUE #(  %msg = new_message_with_text(
+                            severity = if_abap_behv_message=>severity-error
+                            text = |Cannot Update Document No. is Different.| )
+                            ) TO reported-gateentrylines.
+        ELSEIF Line-PartyCode NE '' AND Line-PartyCode NE <lfs_entity>-PartyCode.
+          APPEND VALUE #( %tky = <lfs_entity>-%tky ) TO failed-gateentrylines.
+
+          APPEND VALUE #(  %msg = new_message_with_text(
+                            severity = if_abap_behv_message=>severity-error
+                            text = |Cannot Update Party Code is Different for { <lfs_entity>-GateItemNo }.| )
+                            ) TO reported-gateentrylines.
+        ELSEIF Line-PartyName NE '' AND Line-PartyName NE <lfs_entity>-PartyName.
+          APPEND VALUE #( %tky = <lfs_entity>-%tky ) TO failed-gateentrylines.
+
+          APPEND VALUE #(  %msg = new_message_with_text(
+                            severity = if_abap_behv_message=>severity-error
+                            text = |Cannot Update Party Name is Different for { <lfs_entity>-GateItemNo }.| )
+                            ) TO reported-gateentrylines.
+        ELSEIF Line-ProductCode NE '' AND Line-ProductCode NE <lfs_entity>-ProductCode.
+          APPEND VALUE #( %tky = <lfs_entity>-%tky ) TO failed-gateentrylines.
+
+          APPEND VALUE #(  %msg = new_message_with_text(
+                            severity = if_abap_behv_message=>severity-error
+                            text = |Cannot Update Product Code is Different for { <lfs_entity>-GateItemNo }.| )
+                            ) TO reported-gateentrylines.
+        ELSEIF Line-ProductDesc NE '' AND Line-ProductDesc NE <lfs_entity>-ProductDesc.
+          APPEND VALUE #( %tky = <lfs_entity>-%tky ) TO failed-gateentrylines.
+
+          APPEND VALUE #(  %msg = new_message_with_text(
+                            severity = if_abap_behv_message=>severity-error
+                            text = |Cannot Update Product Desc is Different for { <lfs_entity>-GateItemNo }.| )
+                            ) TO reported-gateentrylines.
+        ELSEIF Line-Plant NE '' AND Line-Plant NE <lfs_entity>-Plant.
+          APPEND VALUE #( %tky = <lfs_entity>-%tky ) TO failed-gateentrylines.
+
+          APPEND VALUE #(  %msg = new_message_with_text(
+                            severity = if_abap_behv_message=>severity-error
+                            text = |Cannot Update Plant is Different for { <lfs_entity>-GateItemNo }.| )
+                            ) TO reported-gateentrylines.
+        ENDIF.
+
+
+      ENDIF.
+
+
+
+    ENDLOOP.
   ENDMETHOD.
 
 

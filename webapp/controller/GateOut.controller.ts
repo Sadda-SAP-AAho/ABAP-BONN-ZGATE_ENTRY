@@ -41,12 +41,12 @@ export default class Details extends Controller {
 
         var that = this;
         this.oDataModel.getMetaModel().loaded().then(function () {
-            that.byId("_IDGenSmartForm")!.bindElement(`/GateEntryHeader('${avcLic}')`);
+            that.byId("_IDGenSmartForm")!.bindElement(avcLic);
         });
 
         this.oDataModel.attachRequestCompleted(function (data: any) {
             let reqDetails = data.getParameters();
-            if (reqDetails.url === `GateEntryHeader('${avcLic}')` && reqDetails.method === 'GET') {
+            if (reqDetails.url === avcLic.replace("/","") && reqDetails.method === 'GET') {
 
                 (that.byId("_IDGenSmartField10") as SmartField).setValue(new Date());
 

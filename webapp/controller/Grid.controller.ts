@@ -18,7 +18,7 @@ export default class Grid extends Controller {
 
     public oDataModel: ODataModel;
     public _PDFViewer: PDFViewer;
-    public selectedDoc: string;
+    public selectedDoc: any;
     public GateEntryNo: string;
     public EntryType: string;
 
@@ -49,16 +49,15 @@ export default class Grid extends Controller {
 
 
     public gateOut(): void {
-        let sPath = this.selectedDoc;
         const router = (this.getOwnerComponent() as any).getRouter();
         router.navTo("GateEntryOut", {
-            GateEntry: window.encodeURIComponent(sPath)
+            GateEntry: window.encodeURIComponent("/GateEntryHeader(GateEntryNo='" + this.selectedDoc.GateEntryNo + "')")
         });
     }
 
     public onSelectionChange(oEvent: any) {
         let object = oEvent.getParameters().listItem.getBindingContext().getObject();
-        
+
         this.EntryType = object.EntryType;
         if (object.GateOutDate !== '' && object.GateOutDate !== null) {
             this.selectedDoc = object;
@@ -75,18 +74,18 @@ export default class Grid extends Controller {
             (this.byId("_IDGenButton01") as Button).setEnabled(true);
         }
 
-        else if(this.EntryType === 'RGP-OUT') {
+        else if (this.EntryType === 'RGP-OUT') {
             (this.byId("_IDGenButton02") as Button).setEnabled(true);
         }
 
-        else if(this.EntryType === 'NRGP') {
+        else if (this.EntryType === 'NRGP') {
             (this.byId("_IDGenButton03") as Button).setEnabled(true);
         }
 
-        else if(this.EntryType === 'PUR') {
+        else if (this.EntryType === 'PUR') {
             (this.byId("_IDGenButton05") as Button).setEnabled(true);
         }
-        else if(this.EntryType === 'WREF') {
+        else if (this.EntryType === 'WREF') {
             (this.byId("_IDGenButton04") as Button).setEnabled(true);
         }
     }

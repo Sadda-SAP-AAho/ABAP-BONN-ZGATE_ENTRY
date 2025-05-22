@@ -62,6 +62,10 @@ export default class Create extends Controller {
         }
 
         lines = lines.filter((data: any) => {
+            if(!data.Plant || !data.UOM){
+                MessageBox.error("Plant and UOM is mandatory");
+                return false;
+            }
             if (!data.ProductDesc) return false;
             if(header.EntryType !== 'RGP-IN' && header.EntryType !== 'WREF'){
                 if(!Number(data.GateQty)){

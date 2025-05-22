@@ -324,8 +324,8 @@
                         >
                             <uxap:blocks>
                                 <t:Table
-                                    rows="{/EntryLines}"
-                                    id="_IDGenTable1"
+                                    rows="{Lines>/EntryLines}"
+                                    id="_IDGenTable2"
                                 >
                                     <t:extension>
                                         <OverflowToolbar style="Clear">
@@ -351,15 +351,15 @@
                                     <t:columns>
                                         <t:Column
                                             width="11rem"
-                                            visible="{/View/DocumentNo/Visible}"
+                                            visible="{Lines>/View/DocumentNo/Visible}"
                                         >
                                             <Label
-                                                text="{/View/DocumentNo/Label}"
+                                                text="{Lines>/View/DocumentNo/Label}"
                                             />
                                             <t:template>
                                                 <Input
-                                                    value="{DocumentNo}"
-                                                    editable="{= ${/View/DocumentNo/Editable} &amp;&amp; !${DocumentNo} }"
+                                                    value="{Lines>DocumentNo}"
+                                                    editable="{= ${Lines>/View/DocumentNo/Editable} &amp;&amp; !${Lines>DocumentNo} }"
                                                     showValueHelp="true"
                                                     valueHelpRequest="handleDValueHelp"
                                                     change="docnochange"
@@ -369,29 +369,38 @@
 
                                         <t:Column
                                             width="11rem"
-                                            visible="{/View/DocumentItemNo/Visible}"
+                                            visible="{Lines>/View/DocumentItemNo/Visible}"
                                         >
                                             <Label
-                                                text="{/View/DocumentItemNo/Label}"
+                                                text="{Lines>/View/DocumentItemNo/Label}"
                                             />
                                             <t:template>
-                                                <Text text="{DocumentItemNo}" />
+                                                <Text text="{Lines>DocumentItemNo}" />
                                             </t:template>
                                         </t:Column>
 
                                         <t:Column
                                             width="11rem"
-                                            visible="{/View/Plant/Visible}"
+                                            visible="{Lines>/View/Plant/Visible}"
                                         >
-                                            <Label text="{/View/Plant/Label}" />
+                                            <Label
+                                                text="{Lines>/View/Plant/Label}"
+                                            />
                                             <t:template>
+                                                    <!-- editable="{
+                                                        parts:[
+                                                            { path: 'Lines>/View/Plant/Editable' },
+                                                            { path: 'Lines>Plant' }
+                                                        ],
+                                                        formatter: '.computeEditable'
+                                                    }" -->
                                                 <Input
                                                     class="sapUiSmallMarginBottom"
                                                     type="Text"
-                                                    editable="{= ${/View/Plant/Editable} &amp;&amp; !${DocumentNo} }"
-                                                    showValueHelp="true"
+                                                    editable="{= ${Lines>/View/Plant/Editable} &amp;&amp; !${Lines>DocumentNo} }"
+                                                    showValueHelp="true"  
                                                     valueHelpRequest="handlePlantValueHelp"
-                                                    value="{Plant}"
+                                                    value="{Lines>Plant}"
                                                     showSuggestion="true"
                                                     showTableSuggestionValueHelp="true"
                                                     suggestionRows="{/Plant}"
@@ -433,33 +442,35 @@
 
                                         <t:Column
                                             width="11rem"
-                                            visible="{/View/SLoc/Visible}"
+                                            visible="{Lines>/View/SLoc/Visible}"
                                         >
-                                            <Label text="{/View/SLoc/Label}" />
+                                            <Label
+                                                text="{Lines>/View/SLoc/Label}"
+                                            />
                                             <t:template>
                                                 <Input
-                                                    editable="{= ${/View/SLoc/Editable} &amp;&amp; !${DocumentNo} }"
-                                                    value="{SLoc}"
+                                                    editable="{= ${Lines>/View/SLoc/Editable} &amp;&amp; !${Lines>DocumentNo} }"
+                                                    value="{Lines>SLoc}"
                                                 />
                                             </t:template>
                                         </t:Column>
 
                                         <t:Column
                                             width="15rem"
-                                            visible="{/View/ProductCode/Visible}"
+                                            visible="{Lines>/View/ProductCode/Visible}"
                                         >
                                             <Label
-                                                text="{/View/ProductCode/Label}"
+                                                text="{Lines>/View/ProductCode/Label}"
                                             />
 
                                             <t:template>
                                                 <Input
                                                     class="sapUiSmallMarginBottom"
                                                     type="Text"
-                                                    editable="{= ${/View/ProductCode/Editable} &amp;&amp; !${DocumentNo} }"
+                                                    editable="{= ${Lines>/View/ProductCode/Editable} &amp;&amp; !${Lines>DocumentNo} }"
                                                     showValueHelp="true"
                                                     valueHelpRequest="handlePCValueHelp"
-                                                    value="{ProductCode}"
+                                                    value="{Lines>ProductCode}"
                                                     showSuggestion="true"
                                                     showTableSuggestionValueHelp="true"
                                                     suggestionRows="{/ProductStdVH}"
@@ -523,35 +534,34 @@
 
                                         <t:Column
                                             width="11rem"
-                                            visible="{/View/ProductDesc/Visible}"
+                                            visible="{Lines>/View/ProductDesc/Visible}"
                                         >
                                             <Label
-                                                text="{/View/ProductDesc/Label}"
+                                                text="{Lines>/View/ProductDesc/Label}"
                                             />
                                             <t:template>
                                                 <Input
-                                                    value="{ProductDesc}"
-                                                    editable="{= ${/View/ProductDesc/Editable} &amp;&amp; !${DocumentNo} }"
+                                                    value="{Lines>ProductDesc}"
+                                                    editable="{= ${Lines>/View/ProductDesc/Editable} &amp;&amp; !${Lines>DocumentNo} }"
                                                 />
                                             </t:template>
                                         </t:Column>
 
                                         <t:Column
                                             width="11rem"
-                                            visible="{/View/PartyCode/Visible}"
-                                            
+                                            visible="{Lines>/View/PartyCode/Visible}"
                                         >
                                             <Label
-                                                text="{/View/PartyCode/Label}"
+                                                text="{Lines>/View/PartyCode/Label}"
                                             />
                                             <t:template>
                                                 <Input
                                                     class="sapUiSmallMarginBottom"
                                                     type="Text"
-                                                    editable="{= ${/View/PartyCode/Editable} &amp;&amp; !${DocumentNo} }"
+                                                    editable="{= ${Lines>/View/PartyCode/Editable} &amp;&amp; !${Lines>DocumentNo} }"
                                                     showValueHelp="true"
                                                     valueHelpRequest="handlePTCValueHelp"
-                                                    value="{PartyCode}"
+                                                    value="{Lines>PartyCode}"
                                                     showSuggestion="true"
                                                     showTableSuggestionValueHelp="true"
                                                     suggestionRows="{/InvoicePartyVH}"
@@ -614,103 +624,109 @@
 
                                         <t:Column
                                             width="11rem"
-                                            visible="{/View/PartyName/Visible}"
+                                            visible="{Lines>/View/PartyName/Visible}"
                                         >
                                             <Label
-                                                text="{/View/PartyName/Label}"
+                                                text="{Lines>/View/PartyName/Label}"
                                             />
                                             <t:template>
                                                 <Input
-                                                    value="{PartyName}"
-                                                    editable="{= ${/View/PartyName/Editable} &amp;&amp; !${DocumentNo} }"
+                                                    value="{Lines>PartyName}"
+                                                    editable="{= ${Lines>/View/PartyName/Editable} &amp;&amp; !${Lines>DocumentNo} }"
                                                 />
                                             </t:template>
                                         </t:Column>
 
                                         <t:Column
                                             width="11rem"
-                                            visible="{/View/GateQty/Visible}"
+                                            visible="{Lines>/View/GateQty/Visible}"
                                         >
                                             <Label
-                                                text="{/View/GateQty/Label}"
+                                                text="{Lines>/View/GateQty/Label}"
                                             />
                                             <t:template>
                                                 <Input
                                                     change="gateQtyChange"
-                                                    value="{GateQty}"
-                                                    editable="{= ${/View/GateQty/Editable}}"
+                                                    value="{Lines>GateQty}"
+                                                    editable="{= ${Lines>/View/GateQty/Editable}}"
                                                 />
                                             </t:template>
                                         </t:Column>
                                         <t:Column
                                             width="11rem"
-                                            visible="{/View/InQty/Visible}"
+                                            visible="{Lines>/View/InQty/Visible}"
                                         >
-                                            <Label text="{/View/InQty/Label}" />
+                                            <Label
+                                                text="{Lines>/View/InQty/Label}"
+                                            />
                                             <t:template>
                                                 <Input
                                                     change="InQtyChange"
-                                                    value="{InQty}"
-                                                    editable="{= ${/View/InQty/Editable}}"
+                                                    value="{Lines>InQty}"
+                                                    editable="{= ${Lines>/View/InQty/Editable}}"
                                                 />
                                             </t:template>
                                         </t:Column>
 
                                         <t:Column
                                             width="11rem"
-                                            visible="{/View/Rate/Visible}"
+                                            visible="{Lines>/View/Rate/Visible}"
                                         >
-                                            <Label text="{/View/Rate/Label}" />
+                                            <Label
+                                                text="{Lines>/View/Rate/Label}"
+                                            />
                                             <t:template>
                                                 <Input
                                                     change="rateChange"
-                                                    value="{Rate}"
-                                                    editable="{= ${/View/Rate/Editable}}"
+                                                    value="{Lines>Rate}"
+                                                    editable="{= ${Lines>/View/Rate/Editable}}"
                                                 />
                                             </t:template>
                                         </t:Column>
 
                                         <t:Column
                                             width="11rem"
-                                            visible="{/View/GateValue/Visible}"
+                                            visible="{Lines>/View/GateValue/Visible}"
                                         >
                                             <Label
-                                                text="{/View/GateValue/Label}"
+                                                text="{Lines>/View/GateValue/Label}"
                                             />
                                             <t:template>
                                                 <Input
-                                                    value="{GateValue}"
-                                                    editable="{= ${/View/GateValue/Editable} &amp;&amp; !${DocumentNo} }"
+                                                    value="{Lines>GateValue}"
+                                                    editable="{= ${Lines>/View/GateValue/Editable} &amp;&amp; !${Lines>DocumentNo} }"
                                                 />
                                             </t:template>
                                         </t:Column>
                                         <t:Column
                                             width="11rem"
-                                            visible="{/View/BalQty/Visible}"
+                                            visible="{Lines>/View/BalQty/Visible}"
                                         >
                                             <Label
-                                                text="{/View/BalQty/Label}"
+                                                text="{Lines>/View/BalQty/Label}"
                                             />
                                             <t:template>
                                                 <Input
-                                                    value="{BalQty}"
-                                                    editable="{= ${/View/BalQty/Editable} &amp;&amp; !${DocumentNo} }"
+                                                    value="{Lines>BalQty}"
+                                                    editable="{= ${Lines>/View/BalQty/Editable} &amp;&amp; !${Lines>DocumentNo} }"
                                                 />
                                             </t:template>
                                         </t:Column>
                                         <t:Column
                                             width="11rem"
-                                            visible="{/View/UOM/Visible}"
+                                            visible="{Lines>/View/UOM/Visible}"
                                         >
-                                            <Label text="{/View/UOM/Label}" />
+                                            <Label
+                                                text="{Lines>/View/UOM/Label}"
+                                            />
                                             <t:template>
                                                 <Input
                                                     class="sapUiSmallMarginBottom"
                                                     type="Text"
-                                                    editable="{= ${/View/UOM/Editable} &amp;&amp; !${DocumentNo} }"
+                                                    editable="{= ${Lines>/View/UOM/Editable} &amp;&amp; !${Lines>DocumentNo} }"
                                                     showValueHelp="true"
                                                     valueHelpRequest="handleQUValueHelp"
-                                                    value="{UOM}"
+                                                    value="{Lines>UOM}"
                                                     showSuggestion="true"
                                                     showTableSuggestionValueHelp="true"
                                                     suggestionRows="{/UnitOfMeasure}"
@@ -762,86 +778,34 @@
                                         </t:Column>
                                         <t:Column
                                             width="11rem"
-                                            visible="{/View/GST/Visible}"
+                                            visible="{Lines>/View/GST/Visible}"
                                         >
-                                            <Label text="{/View/GST/Label}" />
+                                            <Label
+                                                text="{Lines>/View/GST/Label}"
+                                            />
                                             <t:template>
                                                 <Input
-                                                    value="{GST}"
-                                                    editable="{= ${/View/GST/Editable} &amp;&amp; !${DocumentNo} }"
+                                                    value="{Lines>GST}"
+                                                    editable="{= ${Lines>/View/GST/Editable} &amp;&amp; !${Lines>DocumentNo} }"
                                                 />
                                             </t:template>
                                         </t:Column>
                                         <t:Column
                                             width="11rem"
-                                            visible="{/View/Remarks/Visible}"
+                                            visible="{Lines>/View/Remarks/Visible}"
                                         >
                                             <Label
-                                                text="{/View/Remarks/Label}"
+                                                text="{Lines>/View/Remarks/Label}"
                                             />
                                             <t:template>
                                                 <Input
-                                                    value="{Remarks}"
-                                                    editable="{= ${/View/Remarks/Editable} }"
+                                                    value="{Lines>Remarks}"
+                                                    editable="{= ${Lines>/View/Remarks/Editable} }"
                                                 />
                                             </t:template>
                                         </t:Column>
                                     </t:columns>
                                 </t:Table>
-                                <!-- <smartTable:SmartTable
-                                    id="_IDGenSmartTable2"
-                                    entitySet="GateEntryLines"
-                                    smartFilterId="_IDGenSmartFilterBar"
-                                    tableType="ResponsiveTable"
-                                    fieldGroupIds="Entrydate"
-                                    header="Entry Lines"
-                                    persistencyKey="SmartTableAnalytical_Explored"
-                                    enableAutoBinding="true"
-                                    class="sapUiResponsiveContentPadding"
-                                    enableAutoColumnWidth="true"
-                                    editTogglable="false"
-                                    ignoredFields="__metadata"
-                                    app:useSmartToggle="true"
-                                    showFullScreenButton="true"
-                                    beforeRebindTable="onBeforeRebindTable"
-                                    initiallyVisibleFields="DocumentNo,Plant,ProductCode,ProductDesc,PartyCode,PartyName,GateQty,InQty,GateValue,UOM,Remarks"
-                                >
-                                    <table:Table
-                                        id="_IDGenTable2"
-                                        selectionMode="MultiToggle"
-                                        rowSelectionChange="onSelectionChange"
-                                    />
-                                    <smartTable:customToolbar>
-                                        <OverflowToolbar
-                                            id="_IDGenOverflowToolbar1"
-                                        >
-                                            <ToolbarSpacer
-                                                id="_IDGenToolbarSpacer3"
-                                            />
-                                            <Button
-                                                id="_IDGenButton1"
-                                                text="Add"
-                                                visible="false"
-                                                press="onClickAddLine"
-                                            />
-                                            <Button
-                                                id="_IDGenButton2"
-                                                text="Remove"
-                                                enabled="false"
-                                                visible="false"
-                                                press="onClickRemoveLine"
-                                            />
-                                        </OverflowToolbar>
-                                    </smartTable:customToolbar>
-
-                                    <smartTable:layoutData>
-                                        <FlexItemData
-                                            id="_IDGenFlexItemData"
-                                            growFactor="1"
-                                            baseSize="0%"
-                                        />
-                                    </smartTable:layoutData>
-                                </smartTable:SmartTable> -->
                             </uxap:blocks>
                         </uxap:ObjectPageSubSection>
                     </uxap:subSections>

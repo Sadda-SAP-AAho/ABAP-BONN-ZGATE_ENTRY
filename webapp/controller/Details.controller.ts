@@ -102,15 +102,13 @@ export default class Details extends Controller {
         var that = this;
         this.oDataModel.getMetaModel().loaded().then(function () {
             that.byId("smartForm")!.bindElement(that.gateEntry.full);
-            // (that.byId("_IDGenSmartTable2") as SmartTable).bindElement("/GateEntryLines");
         });
-        // (that.byId("_IDGenSmartTable2") as SmartTable).rebindTable(true);
-
+        
         this.lines = new JSONModel();
-        this.byId("_IDGenTable1")?.setModel(this.lines);
-        this.lines.setProperty("/View", this.fieldsEnabled);
-
-
+        this.byId("_IDGenTable2")?.setModel(this.lines, "Lines");
+        that.lines.setProperty("/View", that.fieldsEnabled);
+        
+        
         this.oDataModel.read("/GateEntryLines", {
             filters: [new Filter("GateEntryNo", FilterOperator.EQ, this.gateEntry.Gateentryno)],
             success: function (data: any) {
@@ -120,7 +118,7 @@ export default class Details extends Controller {
                 MessageBox.error("Error Loadnig Lines");
             }
         })
-
+        
         this.oDataModel.attachRequestCompleted(function (data: any) {
             let reqDetails = data.getParameters();
             if (reqDetails.url === `GateEntryHeader('${that.gateEntry.Gateentryno}')` && reqDetails.method === 'GET' && !reqDetails.url.includes("EntryLines")) {
@@ -128,15 +126,21 @@ export default class Details extends Controller {
                 that.setLinesSettings(that.gateEntry["Header"].EntryType);
             }
         })
-
-        this.cancelDisable();
+        
+        that.cancelDisable();
         this._MessageManager.removeAllMessages();
-
+        
         this._MessageManager.registerObject(this.byId("smartForm") as ManagedObject, true);
         this.getView()!.setModel(this._MessageManager.getMessageModel(), "message");
         this.createMessagePopover();
         BusyIndicator.hide();
 
+    }
+
+    public computeEditable(bEditable: any,doc:any) {
+        if(!this.gateEntry["Header"]) return false;
+        console.log(bEditable,doc,this.gateEntry["Header"].EntryType);
+        return bEditable || (!doc && this.gateEntry["Header"].EntryType === "PUR");
     }
 
     public setLinesSettings(EntryType: string) {
@@ -156,14 +160,6 @@ export default class Details extends Controller {
                     ...this.fieldsEnabled.SLoc,
                     "Visible": false
                 });
-                this.lines.setProperty("/View/UOM", {
-                    ...this.fieldsEnabled.UOM,
-                    "Editable": true
-                });
-                this.lines.setProperty("/View/Rate", {
-                    ...this.fieldsEnabled.Rate,
-                    "Editable": true
-                });
                 this.lines.setProperty("/View/DocumentNo", {
                     ...this.fieldsEnabled.DocumentNo,
                     "Visible": false
@@ -180,15 +176,6 @@ export default class Details extends Controller {
                     ...this.fieldsEnabled.Remarks,
                     "Label": "Purpose"
                 });
-                this.lines.setProperty("/View/Plant", {
-                    ...this.fieldsEnabled.Plant,
-                    "Editable": true
-                });
-                this.lines.setProperty("/View/ProductCode", {
-                    ...this.fieldsEnabled.ProductCode,
-                    "Editable": true
-                });
-
                 this.lines.setProperty("/View/GST", {
                     ...this.fieldsEnabled.GST,
                     "Visible": true
@@ -236,10 +223,7 @@ export default class Details extends Controller {
                         ...this.fieldsEnabled.DocumentNo,
                         "Visible": false
                     });
-                    this.lines.setProperty("/View/ProductDesc", {
-                        ...this.fieldsEnabled.ProductDesc,
-                        "Editable": true
-                    });
+                   
                 }
 
                 if (EntryType === 'NRGP') {
@@ -258,7 +242,6 @@ export default class Details extends Controller {
 
                     this.lines.setProperty("/View/GateQty", {
                         ...this.fieldsEnabled.GateQty,
-                        "Editable": false,
                         "Label": "Out Qty"
                     });
                 }
@@ -320,7 +303,7 @@ export default class Details extends Controller {
     }
 
     public deleteLine() {
-        let selectedIndex = (this.byId("_IDGenTable1") as any).getSelectedIndices();
+        let selectedIndex = (this.byId("_IDGenTable2") as any).getSelectedIndices();
         let removedData = this.lines.getProperty("/EntryLines").filter((data: any, index: number) => selectedIndex.includes(index));
         this.removedLines.push(...removedData);
         this.lines.setProperty("/EntryLines", this.lines.getProperty("/EntryLines").filter((data: any, index: number) => !selectedIndex.includes(index)));
@@ -335,7 +318,7 @@ export default class Details extends Controller {
             LineNum: OProperty.length,
             new: true,
             PartyCode: this.gateEntry["Header"].InvoiceParty || "",
-            PartyName: this.gateEntry["Header"].InvoicePartyName || "",
+            PartyName: this.gateEntry["Header"].InvoicePartyName || ""
         })
 
         this.lines.setProperty("/EntryLines", OProperty);
@@ -484,9 +467,9 @@ export default class Details extends Controller {
         let lines = this.lines.getProperty("/EntryLines");
         if (lines.length > 0) {
             for (let index = 0; index < lines.length; index++) {
-                const element = {...lines[index]};
+                const element = { ...lines[index] };
                 delete element.LineNum;
-                element.GateValue = Number(element.GateValue).toFixed(2); 
+                element.GateValue = Number(element.GateValue).toFixed(2);
                 if (element.new) {
                     delete element.new;
                     this.oDataModel.create(this.gateEntry.full + "/to_GateEntryLines", element, {

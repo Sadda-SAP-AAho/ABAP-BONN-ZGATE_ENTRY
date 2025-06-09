@@ -216,6 +216,13 @@
                                                 textLabel="Invoicing Party"
                                             />
                                         </smartForm:GroupElement>
+                                          <smartForm:GroupElement                                        >
+                                            <smartField:SmartField
+                                                visible="{= ${EntryType} === 'NRGP' || ${EntryType} === 'RGP-OUT'}"
+                                                value="{InvoicePartyName}"
+                                                textLabel="Invoicing Party Name"
+                                            />
+                                        </smartForm:GroupElement>
                                         <smartForm:GroupElement
                                             id="_IDGenGroupElement8"
                                         >

@@ -111,7 +111,7 @@ export default class CreateHeader extends Controller {
         let lowVal = new Date(this.lowestDate.toDateString()).getTime();
         if (this.header.getProperty("/EntryType") === "PUR" && (billval < lowVal)) {
             MessageBox.error("Bill Date should be greater or equal than PO Date.");
-            this.header.setProperty("/InvoiceDate","")
+            this.header.setProperty("/InvoiceDate", "")
         }
     }
 
@@ -379,6 +379,15 @@ export default class CreateHeader extends Controller {
                         ...this.currentView.BalQty,
                         "Visible": false
                     });
+                    this.headerview.setProperty("/OutDate", {
+                        ...this.headerFields.OutDate,
+                        "Visible": false
+                    });
+                    this.headerview.setProperty("/InDate", {
+                        ...this.headerFields.InDate,
+                        "Visible": true,
+                        "Label": "Document Date"
+                    });
                 }
 
                 if (EntryType === "RGP-IN") {
@@ -402,6 +411,15 @@ export default class CreateHeader extends Controller {
                         ...this.currentView.DocumentNo,
                         "Visible": true,
                         "Label": "PO Item"
+                    });
+                    this.headerview.setProperty("/OutDate", {
+                        ...this.headerFields.OutDate,
+                        "Visible": false
+                    });
+                    this.headerview.setProperty("/InDate", {
+                        ...this.headerFields.InDate,
+                        "Visible": true,
+                        "Label": "Document Date"
                     });
                 }
                 if (EntryType === "NRGP") {

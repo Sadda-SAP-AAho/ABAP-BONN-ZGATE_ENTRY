@@ -95,7 +95,7 @@ export default class Details extends Controller {
             defaultCountMode: "None",
             defaultUpdateMethod: UpdateMethod.Merge,
         });
-        // this.oDataModel.setDefaultBindingMode("TwoWay");
+        this.oDataModel.setDefaultBindingMode("TwoWay");
         this.getView()!.setModel(this.oDataModel);
 
 
@@ -103,12 +103,12 @@ export default class Details extends Controller {
         this.oDataModel.getMetaModel().loaded().then(function () {
             that.byId("smartForm")!.bindElement(that.gateEntry.full);
         });
-        
+
         this.lines = new JSONModel();
         this.byId("_IDGenTable2")?.setModel(this.lines, "Lines");
-        that.lines.setProperty("/View", that.fieldsEnabled);
-        
-        
+        this.lines.setProperty("/View", {...this.fieldsEnabled});
+
+
         this.oDataModel.read("/GateEntryLines", {
             filters: [new Filter("GateEntryNo", FilterOperator.EQ, this.gateEntry.Gateentryno)],
             success: function (data: any) {
@@ -118,18 +118,19 @@ export default class Details extends Controller {
                 MessageBox.error("Error Loadnig Lines");
             }
         })
-        
+
         this.oDataModel.attachRequestCompleted(function (data: any) {
             let reqDetails = data.getParameters();
             if (reqDetails.url === `GateEntryHeader('${that.gateEntry.Gateentryno}')` && reqDetails.method === 'GET' && !reqDetails.url.includes("EntryLines")) {
                 that.gateEntry["Header"] = JSON.parse(data.getParameters().response.responseText).d;
+                (that.byId("Update") as Button).setVisible(that.gateEntry["Header"].UpdateAllowed);
                 that.setLinesSettings(that.gateEntry["Header"].EntryType);
             }
         })
-        
+
         that.cancelDisable();
         this._MessageManager.removeAllMessages();
-        
+
         this._MessageManager.registerObject(this.byId("smartForm") as ManagedObject, true);
         this.getView()!.setModel(this._MessageManager.getMessageModel(), "message");
         this.createMessagePopover();
@@ -137,9 +138,8 @@ export default class Details extends Controller {
 
     }
 
-    public computeEditable(bEditable: any,doc:any) {
-        if(!this.gateEntry["Header"]) return false;
-        console.log(bEditable,doc,this.gateEntry["Header"].EntryType);
+    public computeEditable(bEditable: any, doc: any) {
+        if (!this.gateEntry["Header"]) return false;
         return bEditable || (!doc && this.gateEntry["Header"].EntryType === "PUR");
     }
 
@@ -223,7 +223,7 @@ export default class Details extends Controller {
                         ...this.fieldsEnabled.DocumentNo,
                         "Visible": false
                     });
-                   
+
                 }
 
                 if (EntryType === 'NRGP') {
@@ -287,6 +287,7 @@ export default class Details extends Controller {
         (this.byId("RemoveLine") as Button).setVisible(true);
         (this.byId("AddLine") as Button).setVisible(true);
 
+        (this.byId("smartForm") as SmartForm).setEditable(true);
         let settings: any = Object.keys(this.lines.getProperty("/View"));
         if (settings) {
             settings.forEach((data: any) => {
@@ -296,10 +297,6 @@ export default class Details extends Controller {
         }
 
 
-        (this.byId("smartForm") as SmartForm).setEditable(true);
-        if ((this.oDataModel as any).oData[`GateEntryHeader('${this.gateEntry.Gateentryno}')`].UpdateAllowed) {
-            // (this.byId("_IDGenSmartTable2") as SmartTable).setEditable(true);
-        }
     }
 
     public deleteLine() {
@@ -334,6 +331,7 @@ export default class Details extends Controller {
         (this.byId("AddLine") as Button).setVisible(false);
 
 
+        (this.byId("smartForm") as SmartForm).setEditable(false);
         let settings: any = Object.keys(this.lines.getProperty("/View"));
         if (settings.length > 0) {
             settings.forEach((data: any) => {
@@ -342,8 +340,6 @@ export default class Details extends Controller {
             })
         }
 
-        (this.byId("smartForm") as SmartForm).setEditable(false);
-        // (this.byId("_IDGenSmartTable2") as SmartTable).setEditable(false);
     }
 
 
@@ -408,8 +404,6 @@ export default class Details extends Controller {
     }
 
 
-
-
     public async onClickSave() {
         let that = this;
         let changes = (this.getView()!.getModel() as any).mChangedEntities;
@@ -465,10 +459,67 @@ export default class Details extends Controller {
         }
 
         let lines = this.lines.getProperty("/EntryLines");
+
+        if (lines.length <= 0) {
+            MessageBox.error("No Lines Found in Gate Entry. Unable to save.");
+            BusyIndicator.hide();
+            return;
+        }
+
+        for (let index = 0; index < lines.length; index++) {
+            const data = lines[index];
+            if (!data.Plant) {
+                MessageBox.error("Plant is mandatory");
+                BusyIndicator.hide();
+                return;
+            }
+            if (!data.UOM) {
+                MessageBox.error("UOM is mandatory");
+                BusyIndicator.hide();
+                return;
+            }
+            if (this.gateEntry["Header"].Plant !== data.Plant) {
+                MessageBox.error("Plant is different");
+                BusyIndicator.hide();
+                return;
+            }
+            if (!data.ProductDesc) {
+                MessageBox.error("Product is Mandatory. Unable to save.");
+                BusyIndicator.hide();
+                return;
+            };
+            if (this.gateEntry["Header"].EntryType !== 'RGP-IN' && this.gateEntry["Header"].EntryType !== 'WREF') {
+                if (!Number(data.GateQty)) {
+                    MessageBox.error("No Qty Entered in Lines. Unable to save.");
+                    BusyIndicator.hide();
+                    return;
+                }
+            }
+            else {
+                if (!data.InQty) {
+                    MessageBox.error("No Qty Entered in Lines. Unable to save.");
+                    BusyIndicator.hide();
+                    return;
+                }
+            }
+
+        }
+
         if (lines.length > 0) {
             for (let index = 0; index < lines.length; index++) {
-                const element = { ...lines[index] };
+                const element = {
+                    ...lines[index],
+                    "DocumentQty": Number(lines[index].DocumentQty || 0).toFixed(2),
+                    "GateQty": Number(lines[index].GateQty || 0).toFixed(2),
+                    "BalQty": Number(lines[index].BalQty || 0).toFixed(2),
+                    "OrderQty": Number(lines[index].OrderQty || 0).toFixed(2),
+                    "InQty": Number(lines[index].InQty || 0).toFixed(2),
+                    "GateValue": Number(lines[index].GateValue || 0).toFixed(2),
+                    "Rate": Number(lines[index].Rate || 0).toFixed(2),
+                }
+
                 delete element.LineNum;
+
                 element.GateValue = Number(element.GateValue).toFixed(2);
                 if (element.new) {
                     delete element.new;

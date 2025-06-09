@@ -368,6 +368,7 @@
                     <m:Input
                         value="{Details>GST}"
                         editable="{= ${Details>DocumentNo} === ''}"
+                        type="Number"
                     />
                 </t:template>
             </t:Column>

@@ -52,6 +52,7 @@ export default class Create extends Controller {
     }
 
     public save() {
+        // debugger;
         let that = this;
         let header = (this.byId("createHeaderForm") as any).byId("EntryHeader").getModel("Header").getProperty("/");
         let lines = (this.byId("createLines") as any).byId("_IDGenTable1")?.getModel("Details").getProperty("/OrderDetailsTable");
@@ -61,29 +62,35 @@ export default class Create extends Controller {
             return;
         }
 
-        lines = lines.filter((data: any) => {
-            if(!data.Plant || !data.UOM){
-                MessageBox.error("Plant and UOM is mandatory");
-                return false;
+        for (let index = 0; index < lines.length; index++) {
+            const data = lines[index];
+            if (!data.Plant) {
+                MessageBox.error("Plant is mandatory");
+                return;
             }
-            if (!data.ProductDesc) return false;
-            if(header.EntryType !== 'RGP-IN' && header.EntryType !== 'WREF'){
-                if(!Number(data.GateQty)){
-                    return false;
+            if (!data.UOM) {
+                MessageBox.error("UOM is mandatory");
+                return;
+            }
+            if (!data.ProductDesc) {
+                MessageBox.error("Product is Mandatory. Unable to save.");
+                return;
+            };
+            if (header.EntryType !== 'RGP-IN' && header.EntryType !== 'WREF') {
+                if (!Number(data.GateQty)) {
+                    MessageBox.error("No Qty Entered in Lines. Unable to save.");
+                    return;
                 }
             }
-            else{
-                if(!data.InQty){
-                    return false;
+            else {
+                if (!data.InQty) {
+                    MessageBox.error("No Qty Entered in Lines. Unable to save.");
+                    return;
                 }
             }
-            return true;
-        })
 
-        if (lines.length <= 0) {
-            MessageBox.error("No Qty Entered in Lines. Unable to save.");
-            return;
         }
+
 
 
         if (header.EntryType === 'WREF' && !this.isTotalWithinLimit(lines)) {
@@ -95,7 +102,7 @@ export default class Create extends Controller {
         header.EntryDate = DateFormat.getDateInstance({ pattern: "yyyy-MM-ddTHH:mm:ss" }).format(new Date());
         header.Plant = lines[0].Plant;
 
-        if (header.EntryType === "PUR" || header.EntryType === "WREF") {
+        if (header.EntryType === "PUR" || header.EntryType === "NRGP" || header.EntryType === "RGP-OUT" || header.EntryType === "WREF") {
             header.RefDocNo = lines[0].DocumentNo;
             delete header.GateOutDate;
             delete header.GateOutTime;
@@ -137,6 +144,7 @@ export default class Create extends Controller {
                             "InQty": Number(lines[i].InQty || 0).toFixed(2),
                             "GateValue": Number(lines[i].GateValue || 0).toFixed(2),
                             "Rate": Number(lines[i].Rate || 0).toFixed(2),
+                            "GST":Number(lines[i].GST || 0).toFixed(2) || "0.00"
                         }
                         delete newLine.LineNum;
                         delete newLine.Tolerance;

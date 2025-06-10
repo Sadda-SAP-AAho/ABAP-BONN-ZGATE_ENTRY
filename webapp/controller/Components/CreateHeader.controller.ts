@@ -400,6 +400,15 @@ export default class CreateHeader extends Controller {
                         "Editable": false,
                         "Label": "Out Qty"
                     });
+                    this.headerview.setProperty("/OutDate", {
+                        ...this.headerFields.OutDate,
+                        "Visible": false
+                    });
+                    this.headerview.setProperty("/InDate", {
+                        ...this.headerFields.InDate,
+                        "Visible": true,
+                        "Label": "Document Date"
+                    });
                 }
                 if (EntryType === "RGP-OUT") {
                     this.lineView.setProperty("/DocumentNo", {

@@ -88,6 +88,10 @@ export default class Create extends Controller {
                     return;
                 }
             }
+            if(lines[0].Plant !== data.Plant){
+                MessageBox.error("Different Plant in Lines. Unable to save.");
+                return;
+            }
 
         }
 
@@ -102,7 +106,7 @@ export default class Create extends Controller {
         header.EntryDate = DateFormat.getDateInstance({ pattern: "yyyy-MM-ddTHH:mm:ss" }).format(new Date());
         header.Plant = lines[0].Plant;
 
-        if (header.EntryType === "PUR" || header.EntryType === "NRGP" || header.EntryType === "RGP-OUT" || header.EntryType === "WREF") {
+        if (header.EntryType === "PUR" || header.EntryType === "NRGP" || header.EntryType === "RGP-OUT" || header.EntryType === "WREF" || header.EntryType === "RGP-IN") {
             header.RefDocNo = lines[0].DocumentNo;
             delete header.GateOutDate;
             delete header.GateOutTime;
